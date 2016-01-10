@@ -9,7 +9,6 @@
 *.ear
 
 # Folder
-hive/*
 target/*
 data/*
 

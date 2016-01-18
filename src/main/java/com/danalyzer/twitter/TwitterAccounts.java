@@ -7,7 +7,9 @@ import com.danalyzer.bbdd.TweetMapper;
 import com.danalyzer.common.MACRO;
 import com.danalyzer.common.UtilsCommon;
 import com.danalyzer.common.UtilsFS;
+import com.danalyzer.common.UtilsTwitter;
 import org.apache.commons.cli.*;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import twitter4j.*;
 import twitter4j.conf.Configuration;
@@ -35,12 +37,12 @@ public class TwitterAccounts implements Serializable {
     private GenericMapper tweetMapper;
 
     public static void main(String[] args){
+        BasicConfigurator.configure();
         String outpurDir = "";
         Set<String> uList = new HashSet<>();
         //Read input arguments
-        if (args.length != 6) {
-            System.out.printf("Usage: TwitterStreamer -o <output dir> -u <commma separated list of users>" +
-                    "-m <spark master [ local[n] | yarn-client |  yarn-cluster ] > \n");
+        if (args.length != 4) {
+            System.out.printf("Usage: TwitterStreamer -o <output dir> -u <commma separated list of users> \n");
             log.error("Exit program with code (-1). Insufficient calling arguments");
             System.exit(-1);
         }
@@ -86,6 +88,9 @@ public class TwitterAccounts implements Serializable {
 
     private void setHiveClient() {
         hiveClient = new HiveJdbcClient(MACRO.BBDD_PROPERTIES_FILE);
+        if(!hiveClient.isConnected()){
+            hiveClient.connect();
+        }
     }
 
     private void setConfiguration() {
@@ -127,10 +132,23 @@ public class TwitterAccounts implements Serializable {
     public void run() {
         TwitterStream twitterStream = new TwitterStreamFactory(conf).getInstance();
         twitterStream.addListener(listener);
+        twitterStream.addRateLimitStatusListener(rateListener);
         twitterStream.user();
     }
 
-    private final UserStreamListener listener = new UserStreamListener() {
+    private RateLimitStatusListener rateListener = new RateLimitStatusListener() {
+        @Override
+        public void onRateLimitStatus( RateLimitStatusEvent event ) {
+            log.debug("Twitter status: Limit["+event.getRateLimitStatus().getLimit() + "], Remaining[" +event.getRateLimitStatus().getRemaining()+"]");
+        }
+
+        @Override
+        public void onRateLimitReached( RateLimitStatusEvent event ) {
+            log.error("Twitter status limit reached: Limit["+event.getRateLimitStatus().getLimit() + "], remaining[" +event.getRateLimitStatus().getRemaining()+"]");
+        }
+    };
+
+    private UserStreamListener listener = new UserStreamListener() {
 
         @Override
         public void onStatus(Status status) {
@@ -138,6 +156,7 @@ public class TwitterAccounts implements Serializable {
             log.debug("Tweet from "+tweet.getUserName()+" processed");
             //Needs disease and status to be correct
             tweetMapper.insert(tweet);
+            System.out.println("tweet");
         }
 
         @Override

@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS twitter_users (
     user_default_location STRING,
     username STRING,
     disease STRING,
-    status STRING,
+    status STRING
 );

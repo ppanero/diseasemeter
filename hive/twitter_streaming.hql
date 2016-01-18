@@ -13,7 +13,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS twitter_streaming (
     tag STRING
 )
     ROW FORMAT DELIMITED
-    FIELDS TERMINATED BY ‘\t’
-    LINES TERMINATED BY ‘\n’
+    FIELDS TERMINATED BY '\t'
+    LINES TERMINATED BY '\n'
     STORED AS TEXTFILE
     LOCATION "/user/devel/data/twitter_data_proc_files/";

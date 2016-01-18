@@ -1,4 +1,4 @@
-package com.danalyzer.twitter;
+package com.danalyzer.common;
 
 import com.danalyzer.common.UtilsCommon;
 import twitter4j.auth.Authorization;

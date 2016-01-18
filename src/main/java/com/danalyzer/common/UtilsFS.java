@@ -1,13 +1,17 @@
 package com.danalyzer.common;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.*;
 
 /**
  * FileSystem utilities.
@@ -16,6 +20,53 @@ public class UtilsFS {
 
 
     private static Logger log = Logger.getLogger(UtilsFS.class);
+
+    public static boolean saveFile(String outputDir, String filename, Set<String> data){
+        Configuration confHDFS = new Configuration(true);
+        OutputStream os = null;
+        BufferedWriter br = null;
+        try {
+            FileSystem fSystem = FileSystem.get(confHDFS);
+            if (!fSystem.exists(new Path(outputDir))) {
+                fSystem.mkdirs(new Path(outputDir));
+            }
+            outputDir = preparePath(outputDir, false);
+            log.debug("Saving data to: " + outputDir + "/" + filename);
+            Path file = new Path(outputDir.concat(filename).concat("_").concat(
+                    String.valueOf(Calendar.getInstance().getTimeInMillis())));
+            os = fSystem.create(file);
+            br = new BufferedWriter( new OutputStreamWriter( os, "UTF-8" ) );
+
+            Iterator<String> it = data.iterator();
+            while(it.hasNext()){
+                String line = it.next().concat("\n");
+                br.write(line);
+            }
+            br.close();
+            os.close();
+        } catch (IOException e) {
+            log.error("Error saving file to destination: ".concat(outputDir));
+            return false;
+        }
+        finally {
+            if(os != null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    log.error("Error closing OutputStream to " + outputDir + "/" + filename);
+                }
+            }
+            if(br != null){
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    log.error("Error closing BufferedWriter to " + outputDir + "/" + filename);
+                }
+            }
+        }
+        confHDFS.clear();
+        return true;
+    }
 
     /**
      * Moves all files from a directory, oldDir, to newDir adding them the markdown and filetype.
@@ -32,7 +83,7 @@ public class UtilsFS {
             if (!fSystem.exists(new Path(newDir))) {
                 fSystem.mkdirs(new Path(newDir));
             }
-            newDir = preparePath(newDir, true);
+            newDir = preparePath(newDir, false);
             log.debug("Moving files...");
             FileStatus[] fileStatus = fSystem.listStatus(new Path(oldDir));
             for (FileStatus fs : fileStatus) {

@@ -13,6 +13,7 @@ target/*
 data/*
 
 # Intellij project files 
+.idea/*
 bcolab.iml
 disease_analyzer.iml
 pom.xml

@@ -1,5 +1,6 @@
 package com.danalyzer.bbdd;
 
+import com.danalyzer.common.MACRO;
 import com.danalyzer.twitter.Tweet;
 
 /**
@@ -29,8 +30,14 @@ public class TweetMapper extends GenericMapper<Tweet>{
     @Override
     protected String[] getSerializedObjectAsString(Tweet tweet) {
         //TODO: take status and disease
-        return new String[]{tweet.getCreationTime(), tweet.getCreationCountry(),
-                tweet.getCreationPlaceName(), tweet.getCreationPlaceType(),
-                tweet.getContent(), tweet.getUserDefaultLocation(), tweet.getUserName(), "\\N", "\\N"};
+        return new String[]{MACRO.QUOTES.concat(tweet.getCreationTime()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getCreationCountry()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getCreationPlaceName()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getCreationPlaceType()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getContent()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getUserDefaultLocation()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat(tweet.getUserName()).concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat("\\N").concat(MACRO.QUOTES),
+                MACRO.QUOTES.concat("\\N").concat(MACRO.QUOTES)};
     }
 }

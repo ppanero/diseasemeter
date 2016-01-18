@@ -1,9 +1,6 @@
 package com.danalyzer.twitter;
 
-import com.danalyzer.common.UtilsFS;
-import com.danalyzer.common.MACRO;
-import com.danalyzer.common.UtilsCommon;
-import com.danalyzer.common.UtilsSpark;
+import com.danalyzer.common.*;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;

@@ -1,6 +1,7 @@
 package com.danalyzer.bbdd;
 
 import com.danalyzer.common.MACRO;
+import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,10 +28,12 @@ public abstract class GenericMapper <T>{
             String tableName = getTableName();
             String[] columnNames = getColumnNames();
             String[] serObj = getSerializedObjectAsString(object);
-            stmt.execute("INSERT INTO TABLE " + tableName + " ("+String.join(MACRO.COMMA, columnNames)+") " +
-                    "VALUES ("+String.join(MACRO.COMMA, serObj)+")");
+            String query = "INSERT INTO TABLE " + tableName + " ("+StringUtils.join(columnNames, MACRO.COMMA)+") " +
+                    "VALUES ("+ StringUtils.join(serObj, MACRO.COMMA)+")";
+            stmt.execute(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }

@@ -6,7 +6,7 @@ import org.apache.commons.validator.UrlValidator;
 /**
  * Created by Light on 10/01/16.
  */
-public class WebUtils {
+public class UtilsWeb {
 
     private static UrlValidator urlValidator = new UrlValidator();
 

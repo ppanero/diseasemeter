@@ -17,13 +17,13 @@ import java.util.Set;
 /**
  * Created by Light on 16/12/15.
  */
-public class ElMundoNewspaper extends Newspaper {
+public class TwentyMinutosNewspaper extends Newspaper {
 
 
-    private static Logger log = Logger.getLogger(ElMundoNewspaper.class);
-    private static final String BASE_FILENAME = "elmundo";
+    private static Logger log = Logger.getLogger(TwentyMinutosNewspaper.class);
+    private static final String BASE_FILENAME = "20minutos";
 
-    public ElMundoNewspaper(String url) {
+    public TwentyMinutosNewspaper(String url) {
         super(url);
     }
 
@@ -32,25 +32,19 @@ public class ElMundoNewspaper extends Newspaper {
         Set<String> news = new HashSet<String>();
         try {
             Document doc = Jsoup.connect(url).get();
-            Elements newsElems = doc.select("article");
+            Elements newsElems = doc.select("#content .title");
             for(Element singleNew : newsElems) {
-                if (singleNew.className().contains("noticia")) {
-                    Elements topic = singleNew.select("header").select("a");
-                    String strTopic = MACRO.MISSING_VALUE;
-                    String strTitle = MACRO.MISSING_VALUE;
-                    String link = MACRO.MISSING_VALUE;
-                    if (topic.size() > 1) {
-                        strTopic = topic.get(0).getElementsByIndexEquals(0).text();
-                        strTitle = topic.get(1).getElementsByIndexEquals(0).text();
-                        link = topic.get(1).attr("href");
-                    } else if (topic.size() == 1) {
-                        strTitle = topic.get(0).getElementsByIndexEquals(0).text();
-                        link = topic.get(0).attr("href");
-                    }
-                    news.add(strTitle.concat(MACRO.FILE_SEPARATOR)
-                            .concat(strTopic).concat(MACRO.FILE_SEPARATOR)
-                            .concat(link));
-                }
+                String strTopic = MACRO.MISSING_VALUE;
+                String strTitle = singleNew.attr("title");
+                String link = singleNew.attr("href");
+                //if(strTopic.equals(MACRO.EMPTY)) strTopic = MACRO.MISSING_VALUE; //Not needed in this case
+                if(strTitle.equals(MACRO.EMPTY)) strTitle = MACRO.MISSING_VALUE;
+                if(!UtilsWeb.isValidUrl(link)) link = MACRO.MISSING_VALUE;
+
+                news.add(strTitle.concat(MACRO.FILE_SEPARATOR)
+                        .concat(strTopic).concat(MACRO.FILE_SEPARATOR)
+                        .concat(link));
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +58,7 @@ public class ElMundoNewspaper extends Newspaper {
         String outDir = "";
         //Read input arguments
         if (args.length != 4) {
-            System.out.printf("Usage: ElMundoNewspaper -o <output dir> -u <url> \n");
+            System.out.printf("Usage: TwentyMinutosNewspaper -o <output dir> -u <url> \n");
             log.error("Exit program with code (-1). Insufficient calling arguments");
             System.exit(-1);
         }
@@ -73,7 +67,7 @@ public class ElMundoNewspaper extends Newspaper {
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = null;
         addOptions(options);
-        Newspaper newspaper = new ElMundoNewspaper("http://www.elmundo.es/salud.html");
+        Newspaper newspaper = new TwentyMinutosNewspaper("http://www.20minutos.es/salud/");
         try {
             cmd = parser.parse( options, args);
         }catch (ParseException e) {
@@ -101,6 +95,6 @@ public class ElMundoNewspaper extends Newspaper {
 
     private static void addOptions(Options options) {
         options.addOption("o", true, "output directory");
-        options.addOption("u", true, "url of El Mundo newspaper health section");
+        options.addOption("u", true, "url of 20 minutos newspaper health section");
     }
 }

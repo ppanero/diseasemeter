@@ -3,11 +3,11 @@ package com.danalyzer.newspaper;
 /**
  * Created by Light on 16/12/15.
  */
-public abstract class News {
+public class News {
 
-    protected String url;
-    protected String title;
-    protected String content;
+    private String url;
+    private String title;
+    private String content;
 
     public News(String url, String title, String content) {
         this.url = url;

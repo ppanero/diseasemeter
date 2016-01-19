@@ -89,7 +89,9 @@ public class TwitterAccounts implements Serializable {
     private void setHiveClient() {
         hiveClient = new HiveJdbcClient(MACRO.BBDD_PROPERTIES_FILE);
         if(!hiveClient.isConnected()){
-            hiveClient.connect();
+            if(!hiveClient.connect()){
+
+            }
         }
     }
 
@@ -156,7 +158,6 @@ public class TwitterAccounts implements Serializable {
             log.debug("Tweet from "+tweet.getUserName()+" processed");
             //Needs disease and status to be correct
             tweetMapper.insert(tweet);
-            System.out.println("tweet");
         }
 
         @Override

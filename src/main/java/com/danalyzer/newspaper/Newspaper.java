@@ -1,6 +1,8 @@
 package com.danalyzer.newspaper;
 
-import java.util.List;
+import com.danalyzer.common.UtilsFS;
+
+import java.util.Set;
 
 
 /**
@@ -9,10 +11,24 @@ import java.util.List;
 public abstract class Newspaper {
 
     protected String url;
-    
+
+    public Newspaper(){
+        this.url = "";
+    }
+
     public Newspaper(String url) {
         this.url = url;
     }
 
-    public abstract List<News> getWebConent();
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    protected boolean saveNews(Set<String> news, String outputDir, String filename ){
+        return UtilsFS.saveFile(outputDir, filename, news);
+    }
+
+    public abstract Set<String> getWebConent();
+
+
 }

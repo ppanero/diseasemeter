@@ -13,7 +13,7 @@ disease_analyzer/target/*
 disease_analyzer/data/*
 
 # Intellij project files 
-disease_analyzer/.idea/*
+*/.idea/*
 *.iml
 pom.xml
 

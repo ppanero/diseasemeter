@@ -8,16 +8,15 @@
 *.war
 *.ear
 
-# Folder
-target/*
-data/*
+# Folder with external data
+disease_analyzer/target/*
+disease_analyzer/data/*
 
 # Intellij project files 
-.idea/*
-bcolab.iml
-disease_analyzer.iml
+disease_analyzer/.idea/*
+*.iml
 pom.xml
 
+#Backup zips
+*.zip
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*

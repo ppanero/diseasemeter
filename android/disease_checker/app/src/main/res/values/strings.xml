@@ -1,0 +1,16 @@
+<resources>
+
+    //App
+    <string name="app_name">Disease Checker</string>
+    //Zone Tab
+    <string name="zone_text_view">Zone:</string>
+    <string name="date_text_view">Date:</string>
+    <string name="zone_it_default_text">filter by zone</string>
+    <string name="date_it_default_text">filter by date</string>
+    <string name="zone_search_btn">Search</string>
+    //Heat Map Tab
+    <string name="disease_text_view">Disease: </string>
+    <string name="disease_it_default_text">filter by disease</string>
+    <string name="disease_search_btn">Search</string>
+
+</resources>

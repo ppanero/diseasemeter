@@ -1,6 +1,7 @@
 package com.danalyzer;
 
 
+import com.danalyzer.api.Processor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class test {
 
     public static void main(String[] args){
-        String[] parts = new String[]{"a","b","c"};
-        System.out.println(StringUtils.join(parts,","));
+        new Processor().sentimentAnalysis(2, new String[]{"Hace buen dia","Esto es malo malo y debería ser un -1",
+                                        "Soy feliz esto es 1"});
     }
 }

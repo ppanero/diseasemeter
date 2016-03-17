@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="inputTextLayout" parent="Theme.AppCompat.Light.DarkActionBar">
+        //hint color And Label Color in False State
+        <item name="android:textColorHint">@color/colorBackground</item>
+        <item name="android:textColorPrimary">@color/colorBackground</item>
+        <item name="android:textSize">18dp</item>
+        //Label color in True State And Bar Color False And True State
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorBackground</item>
+        <item name="colorControlActivated">@color/colorBackground</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
 </resources>

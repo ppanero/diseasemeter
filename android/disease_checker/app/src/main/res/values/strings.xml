@@ -3,14 +3,15 @@
     //App
     <string name="app_name">Disease Checker</string>
     //Zone Tab
-    <string name="zone_text_view">Zone:</string>
-    <string name="date_text_view">Date:</string>
-    <string name="zone_it_default_text">filter by zone</string>
-    <string name="date_it_default_text">filter by date</string>
+    <string name="zone_hint">Filter by zone (i.e. Madrid)</string>
+    <string name="date_hint">Filter by date (DD-MM-YYYY)</string>
     <string name="zone_search_btn">Search</string>
     //Heat Map Tab
-    <string name="disease_text_view">Disease: </string>
-    <string name="disease_it_default_text">filter by disease</string>
+    <string name="disease_hint">Filter by disease (i.e. Ebola)</string>
     <string name="disease_search_btn">Search</string>
+    //Disease item
+    <string name="twitter_icon_description">Twitter icon</string>
+    <string name="newspaper_icon_description">Newspaper icon</string>
+    <string name="cdc_icon_description">CDC icon</string>
 
 </resources>

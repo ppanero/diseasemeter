@@ -4,54 +4,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/zone_text_view"
-        android:id="@+id/zone_tv"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/date_it"
-        android:layout_marginTop="20dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/date_text_view"
-        android:id="@+id/date_tv"
-        android:layout_alignBaseline="@+id/date_it"
-        android:layout_alignBottom="@+id/date_it"
-        android:layout_alignEnd="@+id/zone_tv" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:id="@+id/zone_it"
-        android:ems="10"
-        android:layout_marginStart="56dp"
-        android:layout_alignTop="@+id/zone_tv"
-        android:text="@string/zone_it_default_text" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/date_it"
+        android:theme="@style/inputTextLayout"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/zone_it"
-        android:text="@string/date_it_default_text"
-        android:layout_alignStart="@+id/zone_it" />
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:id="@+id/zone_tv">
+        <EditText android:id="@+id/zone_it"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:hint="@string/zone_hint" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/inputTextLayout"
+        android:id="@+id/date_tv"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_below="@+id/zone_tv"
+        android:layout_alignParentStart="true">
+        <EditText android:id="@+id/date_it"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:hint="@string/date_hint" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/zone_search_btn"
         android:id="@+id/search_zone_btn"
-        android:layout_below="@+id/date_it"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/zone_tv"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp"/>
 
     <ListView
         android:layout_width="wrap_content"
@@ -59,7 +52,13 @@
         android:id="@+id/info_lv"
         android:scrollbars="vertical"
         android:layout_below="@+id/search_zone_btn"
-        android:layout_alignStart="@+id/date_tv"
-        android:choiceMode="none" />
+        android:choiceMode="none"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="2dp"
+        android:clipToPadding="true"/>
 
 </RelativeLayout>

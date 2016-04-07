@@ -20,4 +20,13 @@ public enum DiseaseLevel {
                 return "Undefined";
         }
     }
+
+    public static DiseaseLevel fromString(String level){
+        switch(level.toUpperCase()){
+            case "LOW": return DiseaseLevel.LOW;
+            case "MEDIUM": return DiseaseLevel.MEDIUM;
+            case "HIGH": return DiseaseLevel.HIGH;
+            default: return DiseaseLevel.UNDEF;
+        }
+    }
 }

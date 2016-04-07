@@ -56,7 +56,8 @@ public class ZoneTab extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ZoneDateParam params = new ZoneDateParam(diseaseText.getText().toString(), dateText.getText().toString());
-
+                ZoneDateParam[] myTaskParams = { params };
+                new RetriveDataTask().execute(myTaskParams);
             }
         });
 

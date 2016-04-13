@@ -15,6 +15,7 @@ disease_analyzer/data/*
 # Intellij project files 
 */.idea/*
 *.iml
+.mwb
 pom.xml
 
 #Backup zips

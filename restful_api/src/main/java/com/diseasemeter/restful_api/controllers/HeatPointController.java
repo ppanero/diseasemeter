@@ -13,23 +13,25 @@ import java.util.List;
 @RestController
 public class HeatPointController {
 
-    @RequestMapping(value="/heatpoint", method = RequestMethod.GET)
+    @RequestMapping(value="/heatmap", method = RequestMethod.GET)
     public HeatPoints diseases(@RequestParam(value="name", defaultValue="none", required = false) String name,
                                @RequestParam(value="date", defaultValue="none", required = false) String date) {
 
         //TODO: search according to name and date
 
-        Point p1 = new Point(41.394640, 2.172455, 1000);
-        Point p2= new Point(41.372307, 2.125695, 800);
-        Point p3 = new Point(41.449830, 2.225583, 600);
-        Point p4 = new Point(41.500640, 2.175555, 50);
-        Point p5 = new Point(41.444640, 2.022455, 100);
-        Point p6 = new Point(41.447440, 2.042455, 600);
-        Point p7 = new Point(41.398230, 2.172365, 1000);
-        Point p8 = new Point(41.379240, 2.042455, 60);
-        Point p9 = new Point(41.408680, 2.032595, 100);
-        Point p10 = new Point(41.373340, 2.012455, 90);
-        Point p11 = new Point(41.401230, 2.135875, 10);
+        Point p1 = new Point(40.416872, -3.703717, 1000);
+        Point p2= new Point(40.543272, -3.767217, 800);
+        Point p3 = new Point(40.096872, -3.712717, 600);
+        Point p4 = new Point(40.41572, -3.343457, 50);
+        Point p5 = new Point(40.435372, -3.703717, 100);
+        Point p6 = new Point(40.412332, -3.734517, 600);
+        Point p7 = new Point(40.422734, -3.5065717, 1000);
+        Point p8 = new Point(40.478872, -3.704617, 60);
+        Point p9 = new Point(40.830072, -3.723417, 100);
+        Point p10 = new Point(40.326872, -3.703717, 90);
+        Point p11 = new Point(40.234572, -3.603497, 10);
+
+
         List<Point> pointList = Arrays.asList(new Point[]{p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11});
         HeatPoint hp1 = new HeatPoint("Ebola", pointList);
         List<HeatPoint> heatpointsList = Arrays.asList(new HeatPoint[]{hp1});

@@ -46,7 +46,7 @@ public class ZoneTab extends Fragment {
         data =new ArrayList<DiseaseItem>();
 
         View rootView = inflater.inflate(R.layout.zone_tab, container, false);
-        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress_bar_zonetab);
         diseaseText = (EditText)rootView.findViewById(R.id.zone_it);
         dateText = (EditText)rootView.findViewById(R.id.date_it);
         listv = (ListView)rootView.findViewById(R.id.info_lv);
@@ -57,7 +57,7 @@ public class ZoneTab extends Fragment {
             public void onClick(View v) {
                 ZoneDateParam params = new ZoneDateParam(diseaseText.getText().toString(), dateText.getText().toString());
                 ZoneDateParam[] myTaskParams = { params };
-                new RetriveDataTask().execute(myTaskParams);
+                new RetriveZoneDataTask().execute(myTaskParams);
             }
         });
 
@@ -95,7 +95,7 @@ public class ZoneTab extends Fragment {
         }
     }
 
-    public class RetriveDataTask extends AsyncTask<ZoneDateParam, Void, List<DiseaseItem>> {
+    public class RetriveZoneDataTask extends AsyncTask<ZoneDateParam, Void, List<DiseaseItem>> {
 
         private Exception exception;
 

@@ -11,13 +11,16 @@
 # Folder with external data
 disease_analyzer/target/*
 disease_analyzer/data/*
+restful_api/target/
 
 # Intellij project files 
 */.idea/*
 *.iml
-.mwb
 pom.xml
 
 #Backup zips
 *.zip
 
+#MySQL Workbench files
+*.mwb
+*.bak

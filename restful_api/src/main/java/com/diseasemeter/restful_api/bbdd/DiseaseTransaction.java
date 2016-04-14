@@ -26,7 +26,7 @@ public class DiseaseTransaction {
 
     /* Method to  READ all the employees */
     public static List<Disease> listDiseases(String name, String date){
-        Session session = DBController.getSessionFactory().openSession();
+        Session session = MySQLController.getSessionFactory().openSession();
         Transaction tx = null;
         List<Disease> diseases = new ArrayList<>();
         try{

@@ -9,7 +9,7 @@ import java.io.File;
 /**
  * Created by Light on 13/04/16.
  */
-public class DBController {
+public class MySQLController {
 
     private static SessionFactory sessionFactory;
 

@@ -1,4 +1,4 @@
-package com.diseasemeter.restful_api.resources;
+package com.diseasemeter.restful_api.resources.heatmap;
 
 import java.util.List;
 

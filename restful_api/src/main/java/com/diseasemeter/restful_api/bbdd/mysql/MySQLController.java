@@ -1,10 +1,8 @@
-package com.diseasemeter.restful_api.bbdd;
+package com.diseasemeter.restful_api.bbdd.mysql;
 
-import com.diseasemeter.restful_api.resources.Disease;
+import com.diseasemeter.restful_api.resources.disease.Disease;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
-import java.io.File;
 
 /**
  * Created by Light on 13/04/16.

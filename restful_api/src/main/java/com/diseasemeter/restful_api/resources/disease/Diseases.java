@@ -1,4 +1,6 @@
-package com.diseasemeter.restful_api.resources;
+package com.diseasemeter.restful_api.resources.disease;
+
+import com.diseasemeter.restful_api.resources.disease.Disease;
 
 import java.util.List;
 

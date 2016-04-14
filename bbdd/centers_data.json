@@ -1,0 +1,972 @@
+[
+  {
+    "name": "Dengue",
+    "timestamp": 1426895184079,
+    "zone": "Madrid",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.127726,
+            -3.821148
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.920556,
+            2.962073
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.995423,
+            -7.35327
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.713838,
+            -1.143378
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.842324,
+            2.976548
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.186194,
+            -2.37409
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.184166,
+            -1.190503
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.533483,
+            -0.656312
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.220578,
+            0.449687
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.021178,
+            -0.652206
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Ebola",
+    "timestamp": 1414361984447,
+    "zone": "Barcelona",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.54462,
+            -5.059654
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.127284,
+            -1.518308
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.883313,
+            2.486791
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.80693,
+            -6.269372
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.294832,
+            -3.981961
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.576962,
+            0.225694
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.065122,
+            -1.441837
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.737291,
+            -7.271225
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.839705,
+            -3.026011
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.649204,
+            -9.828815
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Ebola",
+    "timestamp": 1440281226855,
+    "zone": "Barcelona",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.68681,
+            -7.421932
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.780565,
+            -0.301375
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.255353,
+            -9.745287
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.097298,
+            -8.612914
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.338211,
+            -2.836634
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.316758,
+            -2.151915
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.350477,
+            2.706626
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.067563,
+            -5.988545
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.091343,
+            -8.526637
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.834003,
+            -9.603117
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Zika",
+    "timestamp": 1433492005278,
+    "zone": "Barcelona",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.729765,
+            3.260314
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.698086,
+            -3.61007
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.826052,
+            -9.363447
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.887999,
+            -4.569168
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.240915,
+            -2.643114
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.694639,
+            0.918695
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.792016,
+            -9.853638
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.244082,
+            -7.388045
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.988465,
+            -6.447026
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.482412,
+            0.480148
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Zika",
+    "timestamp": 1428459086997,
+    "zone": "Barcelona",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.304767,
+            1.76115
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.397634,
+            2.198202
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.871356,
+            -1.55727
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.284914,
+            -7.404908
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.112843,
+            3.26223
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.009596,
+            -2.327154
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.358906,
+            -1.377451
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.671932,
+            -1.357754
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.987346,
+            -8.061463
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.37476,
+            -4.874148
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Malaria",
+    "timestamp": 1450761207421,
+    "zone": "Madrid",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.956658,
+            -0.693636
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.978726,
+            -7.365997
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.725846,
+            -9.249161
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.234898,
+            -1.312398
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.545124,
+            -6.12726
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.010677,
+            -9.886843
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.859456,
+            -4.660975
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.188366,
+            -5.436476
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.800629,
+            0.305237
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.578545,
+            -4.06059
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Dengue",
+    "timestamp": 1450039682564,
+    "zone": "Madrid",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.504868,
+            -1.642921
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.382622,
+            -6.08543
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.60559,
+            -4.677295
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.154858,
+            3.319387
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.336082,
+            -7.561785
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.926185,
+            0.406297
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.242328,
+            3.314468
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.670972,
+            2.148937
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.336342,
+            -4.983576
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.895144,
+            -6.809648
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Malaria",
+    "timestamp": 1432678395670,
+    "zone": "Barcelona",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.14811,
+            -7.299689
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.698093,
+            -9.406962
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.731883,
+            -0.048187
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.594391,
+            -3.181215
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.560966,
+            -5.993396
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.960526,
+            -7.82645
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.119931,
+            -5.205861
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.447071,
+            -5.64062
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.247598,
+            -1.863709
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.054562,
+            -0.905383
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Zika",
+    "timestamp": 1459272623747,
+    "zone": "Madrid",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.922464,
+            3.269727
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.87996,
+            -2.112209
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.853413,
+            -7.106019
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.226638,
+            -0.242591
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.112637,
+            -6.155928
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.337941,
+            -9.238533
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.806944,
+            -8.394731
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.037152,
+            2.737892
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.115232,
+            0.015787
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            39.681062,
+            -1.230577
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "Dengue",
+    "timestamp": 1408459448931,
+    "zone": "Madrid",
+    "points": [
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            41.015111,
+            -6.425296
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.373016,
+            2.934639
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            38.70671,
+            -9.895242
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            37.097914,
+            -7.081685
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.358933,
+            -5.893895
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.951735,
+            -5.240472
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            43.497507,
+            -9.951622
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            40.545528,
+            3.356946
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            36.926509,
+            -1.610022
+          ]
+        }
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            42.75067,
+            -3.007621
+          ]
+        }
+      }
+    ]
+  }
+]

@@ -1,6 +1,6 @@
-package com.diseasemeter.restful_api.bbdd;
+package com.diseasemeter.restful_api.bbdd.mysql;
 
-import com.diseasemeter.restful_api.resources.Disease;
+import com.diseasemeter.restful_api.resources.disease.Disease;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

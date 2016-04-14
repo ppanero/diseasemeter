@@ -8,14 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -36,7 +35,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Light on 11/03/16.
@@ -48,6 +49,7 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
     private HeatmapTileProvider mProvider;
     private TileOverlay mOverlay;
     private Button searchButton;
+    private EditText diseaseText;
     private ProgressBar progressBar;
 
     @Override
@@ -59,12 +61,13 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
         SupportMapFragment mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
         mapFragment.getMapAsync(this);
 
+
+        diseaseText = (EditText)rootView.findViewById(R.id.disease_it);
         searchButton = (Button)rootView.findViewById(R.id.search_disease_btn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*ZoneDateParam params = new ZoneDateParam(diseaseText.getText().toString(), dateText.getText().toString());
-                ZoneDateParam[] myTaskParams = {params};*/
-                new RetriveHeatmapDataTask().execute();
+                String param = diseaseText.getText().toString();
+                new RetriveHeatmapDataTask().execute(param);
             }
         });
 
@@ -78,19 +81,6 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
     }
 
     private void addHeatMap() {
-        List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
-
-        list.add(new WeightedLatLng(new LatLng(41.394640, 2.172455), 1000));
-        list.add(new WeightedLatLng(new LatLng(41.372307, 2.125695), 800));
-        list.add(new WeightedLatLng(new LatLng(41.449830, 2.225583), 600));
-        list.add(new WeightedLatLng(new LatLng(41.500640, 2.175555), 50));
-        list.add(new WeightedLatLng(new LatLng(41.444640, 2.022455), 100));
-        list.add(new WeightedLatLng(new LatLng(41.447440, 2.042455), 600));
-        list.add(new WeightedLatLng(new LatLng(41.398230, 2.172365), 1000));
-        list.add(new WeightedLatLng(new LatLng(41.379240, 2.042455), 60));
-        list.add(new WeightedLatLng(new LatLng(41.408680, 2.032595), 100));
-        list.add(new WeightedLatLng(new LatLng(41.392340, 2.012455), 90));
-        list.add(new WeightedLatLng(new LatLng(41.401230, 2.135875), 10));
 
         // Create the gradient.
         int[] colors = { Color.rgb(102, 225, 0), // green
@@ -103,22 +93,17 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
 
         // Create a heat mMap tile provider, passing it the latlngs of the police stations.
         mProvider = new HeatmapTileProvider.Builder()
-                .weightedData(list)
                 .gradient(gradient)
                 .build();
         // Add a tile overlay to the mMap, using the heat mMap tile provider.
         mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         mProvider.setOpacity(0.7);
         mOverlay.clearTileCache();
-
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(41.401230, 2.135875))
-                .title("Ebola"));
     }
 
 
 
-    public class RetriveHeatmapDataTask extends AsyncTask<Void, Void, List<HeatmapItem>> {
+    public class RetriveHeatmapDataTask extends AsyncTask<String, Void, HeatmapItem>{
 
         protected void onPreExecute() {
             progressBar.setVisibility(View.VISIBLE);
@@ -126,23 +111,17 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
             mMap.clear();
         }
 
-        protected List<HeatmapItem> doInBackground(Void... params) {
+        protected HeatmapItem doInBackground(String... params) {
             // Do some validation here
-            List<HeatmapItem> ret = new ArrayList<>();
             try {
                 String stringUrl = MACRO.API_IP.concat(MACRO.API_HEATMAP_ENTRYPOINT);
-                /*for (ZoneDateParam param : params){
+                for (String param : params){
                     boolean withParams = false;
-                    if (!param.getZone().equals("")) {
+                    if (!param.equals("")) {
                         if(!withParams) stringUrl.concat("?");
-                        stringUrl.concat("zone=").concat(param.getZone());
+                        stringUrl.concat("disease=").concat(param);
                     }
-                    if(!param.getDate().equals("")){
-                        if(!withParams) stringUrl.concat("?");
-                        else stringUrl.concat("&");
-                        stringUrl.concat("date=").concat(param.getDate());
-                    }
-                }*/
+                }
                 URL url = new URL(stringUrl);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 String response = "";
@@ -162,54 +141,55 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
                 }
                 try {
                     if (!response.equals("")) {
+                        Set<MarkerOptions> markers = new HashSet<>();
+                        Set<WeightedLatLng> points = new HashSet<>();
+
+                        //Process heatpoints
                         JSONObject jsonDiseases = (JSONObject) new JSONTokener(response).nextValue();
                         JSONArray jsondlist = (JSONArray) jsonDiseases.get("heatPointList");
                         for (int i = 0; i < jsondlist.length(); ++i){
                             JSONObject obj = jsondlist.getJSONObject(i);
-                            String name = obj.getString("name");
-                            JSONArray mappoints = (JSONArray) obj.get("pointList");
-                            List<WeightedLatLng> points = new ArrayList<>();
                             //First iteration to get the center
-                            JSONObject jsonpoint = mappoints.getJSONObject(0);
-                            LatLng center = new LatLng(jsonpoint.getDouble("latitude"),
-                                                        jsonpoint.getInt("longitude"));
-                            points.add(new WeightedLatLng(new LatLng(jsonpoint.getDouble("latitude"),
-                                    jsonpoint.getDouble("longitude")),
-                                    jsonpoint.getInt("weight")));
-                            //Continue adding to list
-                            for (int j = 1; j < mappoints.length(); ++j){
-                                jsonpoint = mappoints.getJSONObject(j);
-                                points.add(new WeightedLatLng(new LatLng(jsonpoint.getDouble("latitude"),
-                                        jsonpoint.getDouble("longitude")),
-                                        jsonpoint.getInt("weight")));
-                            }
-                            if(!points.isEmpty())
-                                ret.add(new HeatmapItem(name, center, points));
+                            Double[] coordinates = (Double[]) ((JSONObject)obj.get("location")).get("coordinates");
+                            points.add(new WeightedLatLng(new LatLng(coordinates[0],coordinates[1]),
+                                    obj.getInt("weight")));
                         }
+
+                        //Process markers
+                        jsondlist = (JSONArray) jsonDiseases.get("centerList");
+                        for (int i = 0; i < jsondlist.length(); ++i){
+                            JSONObject obj = jsondlist.getJSONObject(i);
+                            //First iteration to get the center
+                            String name = obj.getString("name");
+                            Double[] coordinates = (Double[]) ((JSONObject)obj.get("location")).get("coordinates");
+                            markers.add(new MarkerOptions()
+                                    .position(new LatLng(coordinates[0], coordinates[1]))
+                                    .title(name));
+                        }
+
+                        //finished
+                        return new HeatmapItem(markers, points);
                     }
                 } catch (JSONException e) {
-                    return ret;
+                    return null;
                 }
             } catch (MalformedURLException e) {
-                return ret;
+                return null;
             } catch (IOException e) {
-                return ret;
+                return null;
             }
-            return ret;
+            return null;
         }
 
-        protected void onPostExecute(List<HeatmapItem> data) {
+        protected void onPostExecute(HeatmapItem data) {
             progressBar.invalidate();
             progressBar.setVisibility(View.GONE);
-            if(!data.isEmpty()) {
-                List<WeightedLatLng> mapData = new ArrayList<>();
-                for(HeatmapItem hItem : data) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(hItem.getMarkerPoint())
-                            .title(hItem.getName()));
-                    mapData.addAll(hItem.getPoints());
+            if(data != null) {
+                Set<MarkerOptions> markers = data.getMarkers();
+                for(MarkerOptions marker : markers) {
+                    mMap.addMarker(marker);
                 }
-                mProvider.setWeightedData(mapData);
+                mProvider.setWeightedData(data.getPoints());
                 // Add a tile overlay to the mMap, using the heat mMap tile provider.
                 mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
                 mProvider.setOpacity(0.7);

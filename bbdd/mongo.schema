@@ -10,13 +10,10 @@ db.center.createIndex({ location: "2dsphere" })
 	name:
 	timestamp:
 	zone:
-	points:[
-	{
-	   location: {
-	    type: "Point",
-	    coordinates: [<>,<>]
-	   }
-	}]
+   	location: {
+    	type: "Point",
+    	coordinates: [<>,<>]
+   	}
 }
 
 //Centers generator
@@ -32,18 +29,13 @@ db.center.createIndex({ location: "2dsphere" })
       var zones = ['Madrid', 'Barcelona'];
       return zones[tags.integer(0,1)];
     },
-	points:[
-		'{{repeat(10)}}',
-		{
-          location: {
+    location: {
             type: "Point",
             coordinates: [
             '{{floating(36.000001, 44.000001)}}',
             '{{floating(-10.000001, 3.400000)}}']
           }
-		}
-	]
- }
+	 }
 ]
 
 //Heatpoints

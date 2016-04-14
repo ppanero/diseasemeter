@@ -2,7 +2,6 @@ package com.diseasemeter.restful_api.resources.heatmap;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Set;
 
 /**
  * Created by Light on 14/04/16.
@@ -13,16 +12,15 @@ public class Center {
     private String name;
     private String zone;
     private long timestamp;
-    private Set<Location> points;
+    private Location location;
 
+    public Center() { }
 
-    public Center() {}
-
-    public Center(String name, String zone, long timestamp, Set<Location> points) {
+    public Center(String name, String zone, long timestamp, Location location) {
         this.name = name;
         this.zone = zone;
         this.timestamp = timestamp;
-        this.points = points;
+        this.location = location;
     }
 
     public String getName() {
@@ -49,11 +47,11 @@ public class Center {
         this.timestamp = timestamp;
     }
 
-    public Set<Location> getPoints() {
-        return points;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setPoints(Set<Location> points) {
-        this.points = points;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

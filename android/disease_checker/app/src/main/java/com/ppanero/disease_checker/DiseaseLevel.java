@@ -5,10 +5,12 @@ package com.ppanero.disease_checker;
  */
 public enum DiseaseLevel {
 
-    UNDEF, LOW, MEDIUM, HIGH;
+    UNDEF, INACTIVE, LOW, MEDIUM, HIGH;
 
     public String toString(){
         switch(this){
+            case INACTIVE:
+                return "Inactive";
             case LOW:
                 return "Low";
             case MEDIUM:
@@ -23,6 +25,7 @@ public enum DiseaseLevel {
 
     public static DiseaseLevel fromString(String level){
         switch(level.toUpperCase()){
+            case "INACTIVE": return DiseaseLevel.INACTIVE;
             case "LOW": return DiseaseLevel.LOW;
             case "MEDIUM": return DiseaseLevel.MEDIUM;
             case "HIGH": return DiseaseLevel.HIGH;

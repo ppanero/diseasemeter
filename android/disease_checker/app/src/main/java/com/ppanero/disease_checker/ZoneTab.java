@@ -65,12 +65,6 @@ public class ZoneTab extends Fragment {
     }
 
     private void CreateListView() {
-
-        data.add(new DiseaseItem("Tifus", DiseaseLevel.MEDIUM, "Madrid, 04/12/2016", 525435, 2, 544));
-        data.add(new DiseaseItem("Flew", DiseaseLevel.LOW, "Tarragona, 20/04/2016", 325466, 2, 1111));
-        data.add(new DiseaseItem("Hepatitis", DiseaseLevel.LOW, "Bilbao, 09/05/2016", 3534, 1, 5435));
-        data.add(new DiseaseItem("Cancer", DiseaseLevel.LOW, "Caceres, 17/03/2016", 53455, 1, 334));
-        data.add(new DiseaseItem("AIDS", DiseaseLevel.LOW, "Barcelona, 28/11/2016", 345345, 1, 7443));
         //Create an adapter for the listView and add the ArrayList to the adapter.
         listvAdapter = new DiseaseItemAdapter(getActivity().getApplicationContext(), R.layout.disease_item, data);
         listv.setAdapter(listvAdapter);
@@ -144,9 +138,12 @@ public class ZoneTab extends Fragment {
                         JSONArray jsondlist = (JSONArray) jsonDiseases.get("diseases");
                         for (int i = 0; i < jsondlist.length(); ++i){
                             JSONObject obj = jsondlist.getJSONObject(i);
-                            ret.add(new DiseaseItem(obj.getString("name"), DiseaseLevel.fromString(obj.getString("level")),
-                                    obj.getString("place").concat(",").concat(obj.getString("date")),obj.getInt("tweets"),
-                                    obj.getInt("cdc"), obj.getInt("news")));
+                            DiseaseLevel dl = DiseaseLevel.fromString(obj.getString("level"));
+                            if(!obj.getBoolean("active")) dl = DiseaseLevel.INACTIVE;
+
+                            ret.add(new DiseaseItem(obj.getString("name"), dl,
+                                    obj.getString("location").concat(",").concat(obj.getString("lastUpdate")),
+                                    obj.getInt("tweetsCount"), obj.getInt("cdcCount"), obj.getInt("newsCount")));
                         }
                     }
                 } catch (JSONException e) {

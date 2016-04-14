@@ -1,34 +1,28 @@
 package com.ppanero.disease_checker;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.heatmaps.WeightedLatLng;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Light on 13/04/16.
  */
 public class HeatmapItem {
 
-    private String name;
-    private LatLng markerPoint;
-    private List<WeightedLatLng> points;
+    private Set<MarkerOptions> markers;
+    private Set<WeightedLatLng> points;
 
-    public HeatmapItem(String name, LatLng markerPoint, List<WeightedLatLng> points) {
-        this.name = name;
-        this.markerPoint = markerPoint;
+    public HeatmapItem(Set<MarkerOptions> markers, Set<WeightedLatLng> points) {
+        this.markers = markers;
         this.points = points;
     }
 
-    public String getName() {
-        return name;
+    public Set<MarkerOptions> getMarkers() {
+        return markers;
     }
 
-    public LatLng getMarkerPoint() {
-        return markerPoint;
-    }
-
-    public List<WeightedLatLng> getPoints() {
+    public Set<WeightedLatLng> getPoints() {
         return points;
     }
 }

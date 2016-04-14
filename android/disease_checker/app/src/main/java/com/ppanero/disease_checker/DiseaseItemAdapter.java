@@ -79,6 +79,7 @@ public class DiseaseItemAdapter extends ArrayAdapter<DiseaseItem> {
                 return  Color.parseColor("#ff6600");
             case LOW:
                 return Color.parseColor("#ffc61a");
+            case INACTIVE:
             case UNDEF:
             default:
                 return Color.parseColor("#000000");

@@ -1,3 +1,10 @@
+//mongoimport
+mongoimport --db diseasemeter --collection center bbdd/centers_data.json --jsonArray
+mongoimport --db diseasemeter --collection heatpoint bbdd/heatpoints_data.json --jsonArray
+
+db.heatpoint.createIndex({ location: "2dsphere" })
+db.center.createIndex({ location: "2dsphere" })
+
 //Centers
 {
 	name:

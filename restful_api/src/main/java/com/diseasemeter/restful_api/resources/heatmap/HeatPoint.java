@@ -1,21 +1,26 @@
 package com.diseasemeter.restful_api.resources.heatmap;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 /**
  * Created by Light on 07/04/16.
  */
+@Document(collection = "heatpoints")
 public class HeatPoint {
 
     private int weight;
-    private int timestamp;
+    private long timestamp;
+    private String name;
     private String zone;
     private Location location;
 
 
     public HeatPoint() {}
 
-    public HeatPoint(int weight, int timestamp, String zone, Location location) {
+    public HeatPoint(int weight, long timestamp, String name, String zone, Location location) {
         this.weight = weight;
         this.timestamp = timestamp;
+        this.name = name;
         this.zone = zone;
         this.location = location;
     }
@@ -28,12 +33,20 @@ public class HeatPoint {
         this.weight = weight;
     }
 
-    public int getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(int timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getZone() {

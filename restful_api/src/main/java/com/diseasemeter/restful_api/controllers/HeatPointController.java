@@ -14,9 +14,9 @@ import java.util.List;
 
 @RestController
 public class HeatPointController {
-    
+
     @RequestMapping(value="/heatmap", method = RequestMethod.GET)
-    public HeatMapData diseases(@RequestParam(value="name", defaultValue="none", required = false) String name) {
+    public HeatMapData diseases(@RequestParam(value="disease", defaultValue="none", required = false) String name) {
 
         List<HeatPoint> heatPointList = null;
         List<Center> centerList = null;

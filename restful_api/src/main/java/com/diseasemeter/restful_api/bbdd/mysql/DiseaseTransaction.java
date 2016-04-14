@@ -18,21 +18,22 @@ public class DiseaseTransaction {
     private static final String SELECT_QUERY = "FROM Disease";
     private static final String WHERE_CLAUSE = " WHERE ";
     private static final String AND_CLAUSE = " AND ";
-    private static final String NAME_PARAM = "name = :name";
+    private static final String NAME_PARAM = "location = :location";
     private static final String DATE_PARAM = "STR_TO_DATE(:date, '%d/%m/%Y') BETWEEN STR_TO_DATE(initial_date, '%d/%m/%Y') AND STR_TO_DATE(last_update, '%d/%m/%Y')";
+    private static final String ORBER_BY_CLAUSE = " ORDER BY active DESC, level DESC";
     //String cheking
     private static final String DATE_REGEX = "^(0[1-9]|[12][0-9]|3[01])\\/(0[1-9]|1[012])\\/(19|20)\\d\\d$";
     private static final Pattern pattern = Pattern.compile(DATE_REGEX);
 
     /* Method to  READ all the employees */
-    public static List<Disease> listDiseases(String name, String date){
+    public static List<Disease> listDiseases(String zone, String date){
         Session session = MySQLController.getSessionFactory().openSession();
         Transaction tx = null;
         List<Disease> diseases = new ArrayList<>();
         try{
             String queryString = SELECT_QUERY;
             boolean pName = false, pDate = false;
-            if(name != null && !name.equals("")){
+            if(zone != null && !zone.equals("")){
                 pName = true;
                 queryString = queryString.concat(WHERE_CLAUSE).concat(NAME_PARAM);
             }
@@ -46,9 +47,9 @@ public class DiseaseTransaction {
                 pDate = true;
                 queryString = queryString.concat(DATE_PARAM);
             }
-
+            queryString = queryString.concat(ORBER_BY_CLAUSE);
             Query query = session.createQuery(queryString);
-            if(pName) query.setParameter("name",name);
+            if(pName) query.setParameter("location",zone);
             if(pDate) query.setParameter("date", date);
 
             tx = session.beginTransaction();

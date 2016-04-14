@@ -106,13 +106,13 @@ public class ZoneTab extends Fragment {
                 for (ZoneDateParam param : params){
                     boolean withParams = false;
                     if (!param.getZone().equals("")) {
-                        if(!withParams) stringUrl.concat("?");
-                        stringUrl.concat("zone=").concat(param.getZone());
+                        if(!withParams) stringUrl = stringUrl.concat("?");
+                        stringUrl = stringUrl.concat("zone=").concat(param.getZone());
                     }
                     if(!param.getDate().equals("")){
-                        if(!withParams) stringUrl.concat("?");
-                        else stringUrl.concat("&");
-                        stringUrl.concat("date=").concat(param.getDate());
+                        if(!withParams) stringUrl = stringUrl.concat("?");
+                        else stringUrl = stringUrl.concat("&");
+                        stringUrl = stringUrl.concat("date=").concat(param.getDate());
                     }
                 }
                 URL url = new URL(stringUrl);
@@ -138,7 +138,7 @@ public class ZoneTab extends Fragment {
                         JSONArray jsondlist = (JSONArray) jsonDiseases.get("diseases");
                         for (int i = 0; i < jsondlist.length(); ++i){
                             JSONObject obj = jsondlist.getJSONObject(i);
-                            DiseaseLevel dl = DiseaseLevel.fromString(obj.getString("level"));
+                            DiseaseLevel dl = DiseaseLevel.values()[obj.getInt("level")];
                             if(!obj.getBoolean("active")) dl = DiseaseLevel.INACTIVE;
 
                             ret.add(new DiseaseItem(obj.getString("name"), dl,

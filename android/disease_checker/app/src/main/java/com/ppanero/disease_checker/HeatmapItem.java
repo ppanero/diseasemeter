@@ -3,6 +3,7 @@ package com.ppanero.disease_checker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.heatmaps.WeightedLatLng;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -11,9 +12,9 @@ import java.util.Set;
 public class HeatmapItem {
 
     private Set<MarkerOptions> markers;
-    private Set<WeightedLatLng> points;
+    private List<WeightedLatLng> points;
 
-    public HeatmapItem(Set<MarkerOptions> markers, Set<WeightedLatLng> points) {
+    public HeatmapItem(Set<MarkerOptions> markers, List<WeightedLatLng> points) {
         this.markers = markers;
         this.points = points;
     }
@@ -22,7 +23,7 @@ public class HeatmapItem {
         return markers;
     }
 
-    public Set<WeightedLatLng> getPoints() {
+    public List<WeightedLatLng> getPoints() {
         return points;
     }
 }

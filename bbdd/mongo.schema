@@ -54,7 +54,7 @@ db.center.createIndex({ location: "2dsphere" })
 [
 	'{{repeat(1000)}}',
   {
-	weigth:'{{integer(10,10000)}}',
+	weight:'{{integer(10,10000)}}',
 	timestamp: '{{date(new Date(2014, 0, 1), new Date()).getTime()}}',
 	zone: function (tags) {
       var zones = ['Madrid', 'Barcelona'];

@@ -12,9 +12,9 @@ import com.diseasemeter.restful_api.resources.disease.Diseases;
 public class DiseasesController {
 
     @RequestMapping(value="/diseases", method = RequestMethod.GET)
-    public Diseases diseases(@RequestParam(value="zone", defaultValue="", required = false) String name,
+    public Diseases diseases(@RequestParam(value="zone", defaultValue="", required = false) String zone,
                              @RequestParam(value="date", defaultValue="", required = false) String date) {
 
-        return new Diseases(DiseaseTransaction.listDiseases(name, date));
+        return new Diseases(DiseaseTransaction.listDiseases(zone, date));
     }
 }

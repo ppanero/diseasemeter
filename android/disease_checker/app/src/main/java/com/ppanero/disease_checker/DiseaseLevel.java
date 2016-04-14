@@ -5,7 +5,7 @@ package com.ppanero.disease_checker;
  */
 public enum DiseaseLevel {
 
-    UNDEF, INACTIVE, LOW, MEDIUM, HIGH;
+    UNDEF, LOW, MEDIUM, HIGH, INACTIVE;
 
     public String toString(){
         switch(this){

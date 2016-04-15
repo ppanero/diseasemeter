@@ -1,4 +1,4 @@
-package com.danalyzer.bbdd;
+package com.diseasemeter.data_colector.bbdd;
 
 /**
  * Created by Light on 02/01/16.

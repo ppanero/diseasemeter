@@ -1,6 +1,8 @@
-package com.danalyzer.api;
+package com.diseasemeter.data_colector.api;
 
-import com.danalyzer.common.UtilsCommon;
+
+
+import com.diseasemeter.data_colector.common.UtilsCommon;
 
 import java.util.Properties;
 

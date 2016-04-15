@@ -1,4 +1,4 @@
-package com.danalyzer.common;
+package com.diseasemeter.data_colector.common;
 
 /**
  * Created by Light on 15/12/15.

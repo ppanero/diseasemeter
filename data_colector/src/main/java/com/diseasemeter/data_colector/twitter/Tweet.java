@@ -1,7 +1,7 @@
-package com.danalyzer.twitter;
+package com.diseasemeter.data_colector.twitter;
 
-import com.danalyzer.common.MACRO;
-import com.danalyzer.common.UtilsCommon;
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsCommon;
 import twitter4j.Place;
 import twitter4j.User;
 

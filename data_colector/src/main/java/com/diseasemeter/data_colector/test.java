@@ -1,10 +1,7 @@
-package com.danalyzer;
+package com.diseasemeter.data_colector;
 
 
-import com.danalyzer.api.Processor;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Arrays;
+import com.diseasemeter.data_colector.api.Processor;
 
 /**
  * Created by Light on 10/01/16.

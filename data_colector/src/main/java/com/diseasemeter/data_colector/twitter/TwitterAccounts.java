@@ -1,13 +1,13 @@
-package com.danalyzer.twitter;
+package com.diseasemeter.data_colector.twitter;
 
-import com.danalyzer.bbdd.BBDDMACRO;
-import com.danalyzer.bbdd.GenericMapper;
-import com.danalyzer.bbdd.HiveJdbcClient;
-import com.danalyzer.bbdd.TweetMapper;
-import com.danalyzer.common.MACRO;
-import com.danalyzer.common.UtilsCommon;
-import com.danalyzer.common.UtilsFS;
-import com.danalyzer.common.UtilsTwitter;
+import com.diseasemeter.data_colector.bbdd.BBDDMACRO;
+import com.diseasemeter.data_colector.bbdd.GenericMapper;
+import com.diseasemeter.data_colector.bbdd.HiveJdbcClient;
+import com.diseasemeter.data_colector.bbdd.TweetMapper;
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsCommon;
+import com.diseasemeter.data_colector.common.UtilsFS;
+import com.diseasemeter.data_colector.common.UtilsTwitter;
 import org.apache.commons.cli.*;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
@@ -39,7 +39,7 @@ public class TwitterAccounts implements Serializable {
     public static void main(String[] args){
         BasicConfigurator.configure();
         String outpurDir = "";
-        Set<String> uList = new HashSet<>();
+        Set<String> uList = new HashSet<String>();
         //Read input arguments
         if (args.length != 4) {
             System.out.printf("Usage: TwitterStreamer -o <output dir> -u <commma separated list of users> \n");

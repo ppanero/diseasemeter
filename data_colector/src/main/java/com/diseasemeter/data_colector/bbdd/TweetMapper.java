@@ -1,7 +1,7 @@
-package com.danalyzer.bbdd;
+package com.diseasemeter.data_colector.bbdd;
 
-import com.danalyzer.common.MACRO;
-import com.danalyzer.twitter.Tweet;
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.twitter.Tweet;
 
 /**
  * Created by Light on 02/01/16.

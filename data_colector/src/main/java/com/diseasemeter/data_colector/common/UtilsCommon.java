@@ -1,4 +1,4 @@
-package com.danalyzer.common;
+package com.diseasemeter.data_colector.common;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

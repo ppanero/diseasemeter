@@ -1,6 +1,6 @@
-package com.danalyzer.common;
+package com.diseasemeter.data_colector.common;
 
-import com.danalyzer.common.UtilsCommon;
+
 import twitter4j.auth.Authorization;
 import twitter4j.auth.OAuthAuthorization;
 import twitter4j.conf.PropertyConfiguration;
@@ -19,7 +19,7 @@ public class UtilsTwitter {
 
     public static Set<String> parseLine(String line) {
         String[] lineParts = line.split(",");
-        Set<String> ret = new HashSet<>();
+        Set<String> ret = new HashSet<String>();
 
         for(String part : lineParts){
             if(part != null)

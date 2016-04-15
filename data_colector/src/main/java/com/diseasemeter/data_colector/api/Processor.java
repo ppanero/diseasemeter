@@ -1,4 +1,4 @@
-package com.danalyzer.api;
+package com.diseasemeter.data_colector.api;
 
 import com.monkeylearn.MonkeyLearn;
 import com.monkeylearn.MonkeyLearnException;

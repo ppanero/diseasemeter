@@ -1,7 +1,7 @@
-package com.danalyzer.bbdd;
+package com.diseasemeter.data_colector.bbdd;
 
-import com.danalyzer.common.MACRO;
-import com.danalyzer.common.UtilsCommon;
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsCommon;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;

@@ -1,6 +1,6 @@
-package com.danalyzer.bbdd;
+package com.diseasemeter.data_colector.bbdd;
 
-import com.danalyzer.common.MACRO;
+import com.diseasemeter.data_colector.common.MACRO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;

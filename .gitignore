@@ -16,7 +16,6 @@ restful_api/target/
 # Intellij project files 
 */.idea/*
 *.iml
-pom.xml
 
 #Backup zips
 *.zip

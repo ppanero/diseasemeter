@@ -9,8 +9,7 @@
 *.ear
 
 # Folder with external data
-disease_analyzer/target/*
-disease_analyzer/data/*
+data_colector/target/
 restful_api/target/
 
 # Intellij project files 

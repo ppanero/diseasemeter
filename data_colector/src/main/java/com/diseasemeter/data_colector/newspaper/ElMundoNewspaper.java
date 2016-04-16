@@ -1,8 +1,8 @@
-package com.danalyzer.newspaper;
+package com.diseasemeter.data_colector.newspaper;
 
-import com.danalyzer.common.MACRO;
-import com.danalyzer.common.UtilsFS;
-import com.danalyzer.common.UtilsWeb;
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsFS;
+import com.diseasemeter.data_colector.common.UtilsWeb;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;

@@ -1,6 +1,10 @@
-package com.danalyzer.twitter;
+package com.diseasemeter.data_colector.twitter;
 
-import com.danalyzer.common.*;
+
+import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsFS;
+import com.diseasemeter.data_colector.common.UtilsSpark;
+import com.diseasemeter.data_colector.common.UtilsTwitter;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
@@ -71,7 +75,7 @@ public class TwitterStreamer implements Serializable {
     public static void main(String[] args) {
 
         String outpurDir = "", sparkMaster = "";
-        Set<String> fSet = new HashSet<>();
+        Set<String> fSet = new HashSet<String>();
         int interval = MACRO.TWEETER_DEFAULT_INTERVAL;
         //Read input arguments
         if (args.length != 8) {
@@ -181,7 +185,7 @@ public class TwitterStreamer implements Serializable {
         tweetFormatter = new FlatMapFunction<Status, String>() {
             @Override
             public Iterable<String> call(Status status) throws Exception {
-                Set<String> ret = new HashSet<>();
+                Set<String> ret = new HashSet<String>();
                 Tweet tweet = new Tweet(status.getCreatedAt(),status.getPlace(), status.getText(), status.getUser());
                 String baseString = tweet.getCreationTime().concat(MACRO.FILE_SEPARATOR)
                         .concat(tweet.getCreationCountry()).concat(MACRO.FILE_SEPARATOR)

@@ -1,6 +1,8 @@
-package com.danalyzer.newspaper;
+package com.diseasemeter.data_colector.newspaper;
 
-import com.danalyzer.common.UtilsFS;
+
+
+import com.diseasemeter.data_colector.common.UtilsFS;
 
 import java.util.Set;
 

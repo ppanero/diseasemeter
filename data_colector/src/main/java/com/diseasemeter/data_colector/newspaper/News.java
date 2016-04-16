@@ -1,4 +1,4 @@
-package com.danalyzer.newspaper;
+package com.diseasemeter.data_colector.newspaper;
 
 /**
  * Created by Light on 16/12/15.

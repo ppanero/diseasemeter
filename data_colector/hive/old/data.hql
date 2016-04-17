@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS data (
     content STRING,
     date TIMESTAMP,
     disease STRING,
-    location STRING,
+    _location STRING,
     source INTEGER,
     language INTEGER,
     status INTEGER,

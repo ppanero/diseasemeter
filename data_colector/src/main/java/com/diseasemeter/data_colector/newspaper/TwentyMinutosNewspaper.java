@@ -1,6 +1,7 @@
 package com.diseasemeter.data_colector.newspaper;
 
 import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
 import com.diseasemeter.data_colector.common.UtilsWeb;
 import org.apache.commons.cli.*;
@@ -12,6 +13,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -64,30 +66,20 @@ public class TwentyMinutosNewspaper extends Newspaper {
         }
         // create Options object
         Options options = new Options();
-        CommandLineParser parser = new PosixParser();
-        CommandLine cmd = null;
         addOptions(options);
         Newspaper newspaper = new TwentyMinutosNewspaper("http://www.20minutos.es/salud/");
-        try {
-            cmd = parser.parse( options, args);
-        }catch (ParseException e) {
-            log.error("Exit program with code (-2). Error parsing options");
-            System.exit(-2);
+
+        Map<String, String> parsedArgs = UtilsCommon.getArgs(options, args);
+
+        String outVal = parsedArgs.get("o");
+        if(outVal != null && !outVal.equals(MACRO.SPACE)){
+            outDir = UtilsFS.preparePath(outVal, false);
+            log.debug("Output directory set to: " + outDir);
         }
-        if(cmd != null){
-            if(cmd.hasOption("o")) {
-                String outVal = cmd.getOptionValue("o");
-                if(outVal != null){
-                    outDir = UtilsFS.preparePath(outVal, false);
-                    log.debug("Output directory set to: " + outDir);
-                }
-            }
-            if(cmd.hasOption("u")) {
-                String webUrl = cmd.getOptionValue("u");
-                if(webUrl != null && UtilsWeb.isValidUrl(webUrl)){
-                    newspaper.setUrl(webUrl);
-                }
-            }
+
+        String webUrl = parsedArgs.get("u");
+        if(webUrl != null && !webUrl.equals(MACRO.SPACE) && UtilsWeb.isValidUrl(webUrl)){
+            newspaper.setUrl(webUrl);
         }
 
         newspaper.saveNews(newspaper.getWebConent(), outDir , BASE_FILENAME);

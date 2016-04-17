@@ -1,8 +1,9 @@
 package com.diseasemeter.data_colector;
 
 
-import com.diseasemeter.data_colector.google_api.Geocoder;
-import com.diseasemeter.data_colector.monkey_learn.Processor;
+import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
+import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 
 /**
  * Created by Light on 10/01/16.
@@ -10,12 +11,8 @@ import com.diseasemeter.data_colector.monkey_learn.Processor;
 public class test {
 
     public static void main(String[] args){
-        //new Processor().sentimentAnalysis(2, new String[]{"Hace buen dia","Esto es malo malo y debería ser un -1",
-        //                               "Soy feliz esto es 1"});
 
-        Double[] d = Geocoder.geocode("Barcelona");
-
-        System.out.println(d[0]);
-        System.out.println(d[1]);
+        GeneralTransaction<Disease> gt = new DiseaseTransaction();
+        System.out.println(gt.exists(new Disease("Ebola", "Sierra Leona","10/05/2015", "27/02/2016",3, 237834, 20, 3, true)));
     }
 }

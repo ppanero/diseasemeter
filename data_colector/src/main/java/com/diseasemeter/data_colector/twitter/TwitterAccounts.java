@@ -1,9 +1,6 @@
 package com.diseasemeter.data_colector.twitter;
 
-import com.diseasemeter.data_colector.bbdd.BBDDMACRO;
-import com.diseasemeter.data_colector.bbdd.GenericMapper;
-import com.diseasemeter.data_colector.bbdd.HiveJdbcClient;
-import com.diseasemeter.data_colector.bbdd.TweetMapper;
+
 import com.diseasemeter.data_colector.common.MACRO;
 import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
@@ -33,8 +30,8 @@ public class TwitterAccounts implements Serializable {
 
     private static Logger log = Logger.getLogger(TwitterAccounts.class);
     private Configuration conf;
-    private HiveJdbcClient hiveClient;
-    private GenericMapper tweetMapper;
+    //private HiveJdbcClient hiveClient;
+    //private GenericMapper tweetMapper;
 
     public static void main(String[] args){
         BasicConfigurator.configure();
@@ -83,16 +80,16 @@ public class TwitterAccounts implements Serializable {
     }
 
     private void setTweetMapper() {
-        tweetMapper = new TweetMapper(hiveClient, BBDDMACRO.TWITTER_USERS_TABLE_NAME, BBDDMACRO.TWITTER_USERS_TABLE_COLUMNS);
+        //tweetMapper = new TweetMapper(hiveClient, BBDDMACRO.TWITTER_USERS_TABLE_NAME, BBDDMACRO.TWITTER_USERS_TABLE_COLUMNS);
     }
 
     private void setHiveClient() {
-        hiveClient = new HiveJdbcClient(MACRO.BBDD_PROPERTIES_FILE);
+        /*hiveClient = new HiveJdbcClient(MACRO.BBDD_PROPERTIES_FILE);
         if(!hiveClient.isConnected()){
             if(!hiveClient.connect()){
 
             }
-        }
+        }*/
     }
 
     private void setConfiguration() {
@@ -157,7 +154,7 @@ public class TwitterAccounts implements Serializable {
             Tweet tweet = new Tweet(status.getCreatedAt(),status.getPlace(), status.getText(), status.getUser());
             log.debug("Tweet from "+tweet.getUserName()+" processed");
             //Needs disease and status to be correct
-            tweetMapper.insert(tweet);
+            //tweetMapper.insert(tweet);
         }
 
         @Override

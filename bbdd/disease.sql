@@ -18,9 +18,8 @@ USE `diseasemeter` ;
 -- Table `disease`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `disease` (
-  `_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `location` VARCHAR(45) NOT NULL,
+  `_name` VARCHAR(45) NOT NULL,
+  `_location` VARCHAR(45) NOT NULL,
   `level` INT NOT NULL,
   `twitter_count` INT NOT NULL,
   `news_count` INT NOT NULL,
@@ -28,9 +27,26 @@ CREATE TABLE IF NOT EXISTS `disease` (
   `last_update` VARCHAR(10) NOT NULL,
   `initial_date` VARCHAR(10) NOT NULL,
   `active` TINYINT(1) NOT NULL,
-  PRIMARY KEY (`_id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC, location ASC))
+  PRIMARY KEY (`_name`, `_location`))
 
+-- -----------------------------------------------------
+-- Table `cdc_data`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cdc_data` (
+  `_disease` VARCHAR(45) NOT NULL,
+  `_location` VARCHAR(45) NOT NULL,
+  `disease_extra` VARCHAR(45),
+  `location_extra` VARCHAR(45),
+  `date` VARCHAR(45) NOT NULL,
+  `level` INT NOT NULL,
+  `weight` INT NOT NULL,
+  PRIMARY KEY (`_disease`, `_location`),
+  INDEX `fk_cdc_data_disease_idx` (`_disease`, `_location`),
+  CONSTRAINT `fk_cdc_data_disease_idx`
+    FOREIGN KEY (`_disease`, `_location`)
+    REFERENCES `disease` (`_name`, `_location`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 
 -- -----------------------------------------------------
 -- Table `social_data`

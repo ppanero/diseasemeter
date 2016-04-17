@@ -1,18 +1,17 @@
 """
-+---------------+-------------+------+-----+---------+----------------+
-| Field         | Type        | Null | Key | Default | Extra          |
-+---------------+-------------+------+-----+---------+----------------+
-| _id           | int(11)     | NO   | PRI | NULL    | auto_increment |
-| name          | varchar(45) | NO   | MUL | NULL    |                |
-| location      | varchar(45) | NO   |     | NULL    |                |
-| level         | int(11)     | NO   |     | NULL    |                |
-| twitter_count | int(11)     | NO   |     | NULL    |                |
-| news_count    | int(11)     | NO   |     | NULL    |                |
-| cdc_count     | int(11)     | NO   |     | NULL    |                |
-| last_update   | varchar(10) | NO   |     | NULL    |                |
-| initial_date  | varchar(10) | NO   |     | NULL    |                |
-| active        | tinyint(1)  | NO   |     | NULL    |                |
-+---------------+-------------+------+-----+---------+----------------+
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| _name         | varchar(45) | NO   | PRI | NULL    |       |
+| _location     | varchar(45) | NO   | PRI | NULL    |       |
+| level         | int(11)     | NO   |     | NULL    |       |
+| twitter_count | int(11)     | NO   |     | NULL    |       |
+| news_count    | int(11)     | NO   |     | NULL    |       |
+| cdc_count     | int(11)     | NO   |     | NULL    |       |
+| last_update   | varchar(10) | NO   |     | NULL    |       |
+| initial_date  | varchar(10) | NO   |     | NULL    |       |
+| active        | tinyint(1)  | NO   |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
 """
 
 INSERT INTO disease (name, location, level, twitter_count, news_count, cdc_count, last_update, initial_date, active) VALUES 

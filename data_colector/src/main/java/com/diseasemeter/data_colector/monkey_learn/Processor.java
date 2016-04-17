@@ -107,11 +107,11 @@ public class Processor {
      */
     public static int getWeight(int source, int level){
         switch (source){
-            case 1: //cdc
+            /*case 1: //cdc
                 if(level == 1) return 100;
                 else if (level == 2) return 250;
                 else if (level == 3) return 500;
-                else return 0;
+                else return 0;*/
 
             case 2: //newspaper
                 if(level == 0) return 20; //nuetral

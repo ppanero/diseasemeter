@@ -4,6 +4,7 @@ import com.diseasemeter.data_colector.common.MACRO;
 import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
 import com.diseasemeter.data_colector.common.UtilsWeb;
+import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -14,7 +15,10 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -34,7 +38,7 @@ import java.util.Set;
 public class CDCWebNotices {
 
     private static final String inputDateFromat = "MMMMM dd, yyyy";
-    private static final String outputDateFormat = "yyyy-MM-dd HH:mm:ss";
+    private static final String outputDateFormat = "dd/MM/yyyy HH:mm:ss";
     private static final String DEFAULT_URL = "http://wwwnc.cdc.gov/travel/notices";
     private static final String READMORE_CLASS = "readmore";
     private static final String DISEASE_PLACE_SEPARATOR = " in ";
@@ -55,32 +59,23 @@ public class CDCWebNotices {
             log.error("Exit program with code (-1). Insufficient calling arguments");
             System.exit(-1);
         }
+
         // create Options object
         Options options = new Options();
-        CommandLineParser parser = new PosixParser();
-        CommandLine cmd = null;
         addOptions(options);
         CDCWebNotices cdcWebNotices = new CDCWebNotices();
-        try {
-            cmd = parser.parse( options, args);
-        }catch (ParseException e) {
-            log.error("Exit program with code (-2). Error parsing options");
-            System.exit(-2);
+
+        Map<String, String> parsedArgs = UtilsCommon.getArgs(options, args);
+
+        String outVal = parsedArgs.get("o");
+        if(outVal != null && !outVal.equals(MACRO.SPACE)){
+            outDir = UtilsFS.preparePath(outVal, false);
+            log.debug("Output directory set to: " + outDir);
         }
-        if(cmd != null){
-            if(cmd.hasOption("o")) {
-                String outVal = cmd.getOptionValue("o");
-                if(outVal != null){
-                    outDir = UtilsFS.preparePath(outVal, false);
-                    log.debug("Output directory set to: " + outDir);
-                }
-            }
-            if(cmd.hasOption("u")) {
-                String webUrl = cmd.getOptionValue("u");
-                if(webUrl != null && UtilsWeb.isValidUrl(webUrl)){
-                    cdcWebNotices.setUrl(webUrl);
-                }
-            }
+
+        String webUrl = parsedArgs.get("u");
+        if(webUrl != null && !webUrl.equals(MACRO.SPACE) && UtilsWeb.isValidUrl(webUrl)){
+            cdcWebNotices.setUrl(webUrl);
         }
 
         cdcWebNotices.checkUrl();
@@ -98,7 +93,7 @@ public class CDCWebNotices {
             Document doc = Jsoup.connect(url).get();
             Elements items = doc.select("#contentArea .row");
             Iterator<Element> rowsItr = items.iterator();
-            Set<String> alerts = new HashSet<String>();
+            Set<CDCAlert> alerts = new HashSet<CDCAlert>();
             while(rowsItr.hasNext()){
                 Element row = rowsItr.next();
                 String id = row.id();
@@ -112,15 +107,19 @@ public class CDCWebNotices {
         }
     }
 
-    private void saveAlerts(String outputDir, Set<String> alerts) {
-        UtilsFS.saveFile(outputDir,BASE_FILENAME , alerts);
+    private void saveAlerts(String outputDir, Set<CDCAlert> alerts) {
+        for(CDCAlert a : alerts){
+            System.out.println(a.toString());
+        }
+        System.out.println(alerts.size());
+        // /UtilsFS.saveFile(outputDir,BASE_FILENAME , alerts);
     }
 
-    private static Set<String> processBlockList(Element list, String alertLevel) {
+    private static Set<CDCAlert> processBlockList(Element list, String alertLevel) {
 
         Elements items = list.select(".list-block li");
         Iterator<Element> itemsItr = items.iterator();
-        Set<String> alertSet = new HashSet<String>();
+        Set<CDCAlert> alertSet = new HashSet<CDCAlert>();
         while(itemsItr.hasNext()) {
             Element item = itemsItr.next();
             Elements eDate = item.select(".date");
@@ -138,7 +137,9 @@ public class CDCWebNotices {
                     log.error("Error processing item. No alert information available");
                 }
                 if (correct) {
-                    alertSet.add(processAlert(sDate, sAlert, alertLevel));
+                    CDCAlert cdcAlert = processAlert(sDate, sAlert, alertLevel);
+                    if(cdcAlert != null)
+                        alertSet.add(cdcAlert);
                 }
             } else {
                 log.error("Error processing item. Date size is " + eDate.size() + " Alert size is " + alerts.size());
@@ -147,49 +148,46 @@ public class CDCWebNotices {
         return alertSet;
     }
 
-    private static String processAlert(String sDate, String sAlert, String alertLevel) {
-        String processedString = alertLevel;
-        //Convert date to YYYY-MM-DD
-        processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(
-                UtilsCommon.formatDate(sDate, inputDateFromat, outputDateFormat)
-        );
+    private static CDCAlert processAlert(String sDate, String sAlert, String alertLevel) {
+
+        String cdcDisease = "", cdcDiseaseExtra = null, cdcPlace = "", cdcPlaceExtra = null, cdcDate = "";
+        int cdcAlertLevel = getLevelFromString(alertLevel);
+        //Convert date to dd/MM/yyyy
+        cdcDate = UtilsCommon.formatDate(sDate, inputDateFromat, outputDateFormat);
         //Separate disease type from place split by "in"
         String[] parts = sAlert.split(DISEASE_PLACE_SEPARATOR);
         if(parts.length == 2){
             String sInBrackets = "";
             //Extract possible () words in the disease
             sInBrackets = UtilsCommon.getTextInBrackets(parts[0]);
-            processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(
-                    parts[0].replace(sInBrackets, MACRO.EMPTY).trim()
-            );
+            cdcDisease = parts[0].replace(sInBrackets, MACRO.EMPTY).trim();
             if(!sInBrackets.equals(MACRO.EMPTY)){
-                processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(
-                        sInBrackets.replace("(", MACRO.EMPTY).replace(")", MACRO.EMPTY)
-                );
-            }
-            else{
-                processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(MACRO.MISSING_VALUE);
+                cdcDiseaseExtra = sInBrackets.replace("(", MACRO.EMPTY).replace(")", MACRO.EMPTY);
             }
             //Extract possible () words in the place
             sInBrackets = UtilsCommon.getTextInBrackets(parts[1]);
-            processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(
-                    parts[1].replace(sInBrackets, MACRO.EMPTY).trim()
-            );
+            cdcPlace = parts[1].replace(sInBrackets, MACRO.EMPTY).trim();
             if(!sInBrackets.equals(MACRO.EMPTY)){
-                processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(
-                        sInBrackets.replace("(", MACRO.EMPTY).replace(")", MACRO.EMPTY)
-                );
-            }
-            else{
-                processedString = processedString.concat(MACRO.FILE_SEPARATOR).concat(MACRO.MISSING_VALUE);
+                cdcPlaceExtra = sInBrackets.replace("(", MACRO.EMPTY).replace(")", MACRO.EMPTY);
             }
         }
         else{
             log.error("More than two parts in alert: "+sAlert);
         }
-        return processedString;
+        if(cdcDisease.equals("")){
+            return null;
+        }
+        return new CDCAlert(cdcDisease,cdcDiseaseExtra,cdcPlace, cdcPlaceExtra, cdcDate,
+                            cdcAlertLevel, CDCAlert.getWeightFromLevel(cdcAlertLevel));
     }
 
+    private static int getLevelFromString(String level){
+        Matcher matcher = Pattern.compile("\\d+").matcher(level);
+        if(matcher.find()){
+            return Integer.parseInt(matcher.group());
+        }
+        return 0;
+    }
     private void checkUrl() {
         if(!UtilsWeb.isValidUrl(this.url))
             this.url = DEFAULT_URL;

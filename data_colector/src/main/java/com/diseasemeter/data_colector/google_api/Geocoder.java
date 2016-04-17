@@ -1,5 +1,6 @@
 package com.diseasemeter.data_colector.google_api;
 
+import com.diseasemeter.data_colector.common.MACRO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +22,7 @@ public class Geocoder {
 
     public static Double[] geocode(String place) {
 
-        String stringUrl = HTTP.concat(place).concat(API_KEY);
+        String stringUrl = HTTP.concat(place.replace(MACRO.SPACE, MACRO.PLUS)).concat(API_KEY);
         try {
 
             URL url = new URL(stringUrl);

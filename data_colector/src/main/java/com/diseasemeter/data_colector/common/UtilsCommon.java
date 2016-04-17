@@ -1,12 +1,14 @@
 package com.diseasemeter.data_colector.common;
 
+import org.apache.commons.cli.*;
+import org.apache.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Properties;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
  */
 public class UtilsCommon {
 
+    private static Logger log = Logger.getLogger(UtilsCommon.class);
     private static final String IN_BRACKETS_REGEX_ = "\\(\\w*\\)";
     private static final Pattern pattern = Pattern.compile(IN_BRACKETS_REGEX_);
 
@@ -54,12 +57,6 @@ public class UtilsCommon {
         return props;
     }
 
-    //Main for tests
-    public static void main (String[] args){
-        //formatDate test
-        //System.out.println(formatDate("Tue Dec 15 20:36:14 CET 2015","EEE MMM dd HH:mm:ss z yyyy", "YYYY-MM-DD HH:MM:SS"));
-    }
-
     public static String getTextInBrackets(String text){
         String bText = "";
         Matcher matcher = pattern.matcher(text);
@@ -69,4 +66,28 @@ public class UtilsCommon {
         }
         return bText;
     }
+
+    public static Map<String, String> getArgs(Options options, String args[]){
+        CommandLineParser parser = new PosixParser();
+        CommandLine cmd = null;
+        try {
+            cmd = parser.parse(options, args);
+        }catch (org.apache.commons.cli.ParseException e) {
+            log.error("Exit program with code (-2). Error parsing options");
+            System.exit(-2);
+        }
+        Map<String, String> ret = new HashMap<String, String>();
+        if(cmd != null){
+            Iterator<Option> it = options.getOptions().iterator();
+            while(it.hasNext()){
+                Option opt = it.next();
+                if(cmd.hasOption(opt.getOpt())){
+                    String auxVal = cmd.getOptionValue(opt.getOpt());
+                    if(auxVal != null) ret.put(opt.getOpt(), auxVal);
+                }
+            }
+        }
+        return ret;
+    }
+
 }

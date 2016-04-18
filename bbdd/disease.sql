@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS `disease` (
 CREATE TABLE IF NOT EXISTS `cdc_data` (
   `_disease` VARCHAR(45) NOT NULL,
   `_location` VARCHAR(45) NOT NULL,
+  `_date` VARCHAR(45) NOT NULL,
   `disease_extra` VARCHAR(45),
   `location_extra` VARCHAR(45),
-  `date` VARCHAR(45) NOT NULL,
   `level` INT NOT NULL,
   `weight` INT NOT NULL,
-  PRIMARY KEY (`_disease`, `_location`),
+  PRIMARY KEY (`_disease`, `_location`, `_date`),
   INDEX `fk_cdc_data_disease_idx` (`_disease`, `_location`),
   CONSTRAINT `fk_cdc_data_disease_idx`
     FOREIGN KEY (`_disease`, `_location`)

@@ -1,5 +1,7 @@
 package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
+import com.diseasemeter.data_colector.common.MACRO;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,7 +21,8 @@ public class CDCData extends GeneralResource implements Serializable {
     @Id
     @Column(name = "_location")
     private String location;
-    @Column(name = "date")
+    @Id
+    @Column(name = "_date")
     private String date;
     @Column(name = "disease_extra")
     private String diseaseExtra;
@@ -101,5 +104,23 @@ public class CDCData extends GeneralResource implements Serializable {
     @Override
     public Object[] getKeyValues() {
         return new Object[]{this.name, this.location, this.date};
+    }
+
+    public static int getWeightFromLevel(int level){
+        if(level == 1) return 100;
+        else if (level == 2) return 250;
+        else if (level == 3) return 500;
+        else return 0;
+    }
+
+    @Override
+    public String toString(){
+        String dExtra = this.diseaseExtra;
+        if(dExtra == null) dExtra = " null disease extra";
+        String pExtra = this.locationExtra;
+        if(pExtra == null) pExtra = " null place extra";
+        return this.name.concat(MACRO.COMMA).concat(dExtra).concat(MACRO.COMMA).concat(this.date).concat(MACRO.COMMA)
+                .concat(this.location).concat(MACRO.COMMA).concat(pExtra).concat(MACRO.COMMA)
+                .concat(String.valueOf(this.level)).concat(MACRO.COMMA).concat(String.valueOf(this.weight));
     }
 }

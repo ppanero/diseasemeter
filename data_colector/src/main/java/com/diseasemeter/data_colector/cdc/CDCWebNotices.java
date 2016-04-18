@@ -1,5 +1,10 @@
 package com.diseasemeter.data_colector.cdc;
 
+import com.diseasemeter.data_colector.bbdd.mysql.CDCDataTransaction;
+import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
+import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCData;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 import com.diseasemeter.data_colector.common.MACRO;
 import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
@@ -38,7 +43,7 @@ import java.util.regex.Pattern;
 public class CDCWebNotices {
 
     private static final String inputDateFromat = "MMMMM dd, yyyy";
-    private static final String outputDateFormat = "dd/MM/yyyy HH:mm:ss";
+    private static final String outputDateFormat = "dd/MM/yyyy";
     private static final String DEFAULT_URL = "http://wwwnc.cdc.gov/travel/notices";
     private static final String READMORE_CLASS = "readmore";
     private static final String DISEASE_PLACE_SEPARATOR = " in ";
@@ -93,7 +98,7 @@ public class CDCWebNotices {
             Document doc = Jsoup.connect(url).get();
             Elements items = doc.select("#contentArea .row");
             Iterator<Element> rowsItr = items.iterator();
-            Set<CDCAlert> alerts = new HashSet<CDCAlert>();
+            Set<CDCData> alerts = new HashSet<CDCData>();
             while(rowsItr.hasNext()){
                 Element row = rowsItr.next();
                 String id = row.id();
@@ -107,19 +112,35 @@ public class CDCWebNotices {
         }
     }
 
-    private void saveAlerts(String outputDir, Set<CDCAlert> alerts) {
-        for(CDCAlert a : alerts){
-            System.out.println(a.toString());
+    private void saveAlerts(String outputDir, Set<CDCData> alerts) {
+        GeneralTransaction<Disease> diseaseTransaction = new DiseaseTransaction();
+        GeneralTransaction<CDCData> cdcTransaction = new CDCDataTransaction();
+        for(CDCData alert : alerts){
+            if(!cdcTransaction.exists(alert)){
+                Disease disease = new Disease(alert.getName(), alert.getLocation(), alert.getDate(), alert.getDate(),
+                                                alert.getLevel(), 0, 0, 1, true);
+                if(!diseaseTransaction.exists(disease)){
+                    if(!diseaseTransaction.insert(disease))
+                        log.error("Error when inserting new disease");
+                }
+                else{
+                    disease.setCdcCount(disease.getCdcCount()+1);
+                    if(!diseaseTransaction.update(disease)){
+                        log.error("Error when updating disease");
+                    }
+                }
+                if(!cdcTransaction.insert(alert)){
+                    log.error("Error when inserting new cdc data");
+                }
+            }
         }
-        System.out.println(alerts.size());
-        // /UtilsFS.saveFile(outputDir,BASE_FILENAME , alerts);
     }
 
-    private static Set<CDCAlert> processBlockList(Element list, String alertLevel) {
+    private static Set<CDCData> processBlockList(Element list, String alertLevel) {
 
         Elements items = list.select(".list-block li");
         Iterator<Element> itemsItr = items.iterator();
-        Set<CDCAlert> alertSet = new HashSet<CDCAlert>();
+        Set<CDCData> alertSet = new HashSet<CDCData>();
         while(itemsItr.hasNext()) {
             Element item = itemsItr.next();
             Elements eDate = item.select(".date");
@@ -137,9 +158,9 @@ public class CDCWebNotices {
                     log.error("Error processing item. No alert information available");
                 }
                 if (correct) {
-                    CDCAlert cdcAlert = processAlert(sDate, sAlert, alertLevel);
-                    if(cdcAlert != null)
-                        alertSet.add(cdcAlert);
+                    CDCData cdcData = processAlert(sDate, sAlert, alertLevel);
+                    if(cdcData != null)
+                        alertSet.add(cdcData);
                 }
             } else {
                 log.error("Error processing item. Date size is " + eDate.size() + " Alert size is " + alerts.size());
@@ -148,10 +169,10 @@ public class CDCWebNotices {
         return alertSet;
     }
 
-    private static CDCAlert processAlert(String sDate, String sAlert, String alertLevel) {
+    private static CDCData processAlert(String sDate, String sAlert, String alertLevel) {
 
         String cdcDisease = "", cdcDiseaseExtra = null, cdcPlace = "", cdcPlaceExtra = null, cdcDate = "";
-        int cdcAlertLevel = getLevelFromString(alertLevel);
+        int cdcDataLevel = getLevelFromString(alertLevel);
         //Convert date to dd/MM/yyyy
         cdcDate = UtilsCommon.formatDate(sDate, inputDateFromat, outputDateFormat);
         //Separate disease type from place split by "in"
@@ -177,8 +198,8 @@ public class CDCWebNotices {
         if(cdcDisease.equals("")){
             return null;
         }
-        return new CDCAlert(cdcDisease,cdcDiseaseExtra,cdcPlace, cdcPlaceExtra, cdcDate,
-                            cdcAlertLevel, CDCAlert.getWeightFromLevel(cdcAlertLevel));
+        return new CDCData(cdcDisease,cdcPlace, cdcDate, cdcDiseaseExtra, cdcPlaceExtra,
+                            cdcDataLevel, CDCData.getWeightFromLevel(cdcDataLevel));
     }
 
     private static int getLevelFromString(String level){
@@ -188,6 +209,7 @@ public class CDCWebNotices {
         }
         return 0;
     }
+
     private void checkUrl() {
         if(!UtilsWeb.isValidUrl(this.url))
             this.url = DEFAULT_URL;

@@ -5,7 +5,7 @@ package com.diseasemeter.data_colector.bbdd.resources.mongodb;
  */
 public class Location {
 
-    private static final String type = "Point";
+    private final String type = "Point";
     private double[] coordinates;
 
     public Location() {}
@@ -14,7 +14,7 @@ public class Location {
         this.coordinates = coordinates;
     }
 
-    public static String getType() {
+    public  String getType() {
         return type;
     }
 

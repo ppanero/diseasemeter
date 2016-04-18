@@ -28,4 +28,10 @@ public class MySQLController {
         }
         return sessionFactory;
     }
+
+    public static void shutdown(){
+        if(!sessionFactory.isClosed())
+            sessionFactory.close();
+    }
+
 }

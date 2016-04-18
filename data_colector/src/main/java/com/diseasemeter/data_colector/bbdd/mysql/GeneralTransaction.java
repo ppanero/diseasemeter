@@ -2,7 +2,6 @@ package com.diseasemeter.data_colector.bbdd.mysql;
 
 
 import com.diseasemeter.data_colector.bbdd.resources.mysql.GeneralResource;
-import org.glassfish.grizzly.servlet.ver25.String;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -21,7 +20,6 @@ public abstract class GeneralTransaction<K extends GeneralResource> {
     public abstract Object[] getKeyColumnNames();
 
     public boolean insert(K data){
-
         Session session = MySQLController.getSessionFactory().openSession();
         Transaction tx = null;
         try{
@@ -94,4 +92,26 @@ public abstract class GeneralTransaction<K extends GeneralResource> {
         }
         return true;
     }
+
+    public K findByKey(K data){
+        Session session = MySQLController.getSessionFactory().openSession();
+        Transaction tx = null;
+        K object = null;
+        try{
+            tx = session.beginTransaction();
+            object = (K) session.load(data.getClass(), data.getKey());
+            tx.commit();
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            return null;
+        }finally {
+            session.close();
+        }
+        return object;
+    }
+
+    public void shutdown(){
+        MySQLController.shutdown();
+    }
+
 }

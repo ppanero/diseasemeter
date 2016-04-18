@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class DiseaseTransaction extends GeneralTransaction<Disease>{
 
     //MySQL schema properties
-    private static final String[] KEY_COLUMN_NAMES = {"_name", "_location"};
+    private static final String[] KEY_COLUMN_NAMES = {"diseaseKey"};
     //--
     private static final String SELECT_QUERY = "FROM Disease";
     private static final String WHERE_CLAUSE = " WHERE ";

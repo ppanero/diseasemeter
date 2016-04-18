@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `disease` (
   `_name` VARCHAR(45) NOT NULL,
   `_location` VARCHAR(45) NOT NULL,
   `level` INT NOT NULL,
+  `weight` INT NOT NULL,
   `twitter_count` INT NOT NULL,
   `news_count` INT NOT NULL,
   `cdc_count` INT NOT NULL,

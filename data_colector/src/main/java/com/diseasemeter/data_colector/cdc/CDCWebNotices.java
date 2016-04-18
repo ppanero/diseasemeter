@@ -4,7 +4,9 @@ import com.diseasemeter.data_colector.bbdd.mysql.CDCDataTransaction;
 import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
 import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCData;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCDataKey;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.DiseaseKey;
 import com.diseasemeter.data_colector.common.MACRO;
 import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
@@ -59,7 +61,7 @@ public class CDCWebNotices {
     public static void main(String[] args){
         String outDir = "";
         //Read input arguments
-        if (args.length != 4) {
+        if (args.length != 2) {
             System.out.printf("Usage: CDCWebNotices -o <output dir> -u <url> \n");
             log.error("Exit program with code (-1). Insufficient calling arguments");
             System.exit(-1);
@@ -71,12 +73,6 @@ public class CDCWebNotices {
         CDCWebNotices cdcWebNotices = new CDCWebNotices();
 
         Map<String, String> parsedArgs = UtilsCommon.getArgs(options, args);
-
-        String outVal = parsedArgs.get("o");
-        if(outVal != null && !outVal.equals(MACRO.SPACE)){
-            outDir = UtilsFS.preparePath(outVal, false);
-            log.debug("Output directory set to: " + outDir);
-        }
 
         String webUrl = parsedArgs.get("u");
         if(webUrl != null && !webUrl.equals(MACRO.SPACE) && UtilsWeb.isValidUrl(webUrl)){
@@ -106,25 +102,32 @@ public class CDCWebNotices {
                     alerts.addAll(processBlockList(row, row.select("h3").text()));
                 }
             }
-            saveAlerts(outputDir, alerts);
+            saveAlerts(alerts);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void saveAlerts(String outputDir, Set<CDCData> alerts) {
+    private void saveAlerts(Set<CDCData> alerts) {
         GeneralTransaction<Disease> diseaseTransaction = new DiseaseTransaction();
         GeneralTransaction<CDCData> cdcTransaction = new CDCDataTransaction();
         for(CDCData alert : alerts){
             if(!cdcTransaction.exists(alert)){
-                Disease disease = new Disease(alert.getName(), alert.getLocation(), alert.getDate(), alert.getDate(),
-                                                alert.getLevel(), 0, 0, 1, true);
+                Disease disease = new Disease(new DiseaseKey(alert.getName(), alert.getLocation()), alert.getDate(), alert.getDate(),
+                                                alert.getLevel(), alert.getWeight(), 0, 0, 1, true);
                 if(!diseaseTransaction.exists(disease)){
                     if(!diseaseTransaction.insert(disease))
                         log.error("Error when inserting new disease");
                 }
                 else{
+                    disease = diseaseTransaction.findByKey(disease);
                     disease.setCdcCount(disease.getCdcCount()+1);
+                    int nWeight = disease.getWeight() + alert.getWeight();
+                    disease.setWeight(nWeight);
+                    if(nWeight < 250) disease.setLevel(1);
+                    else if (nWeight >= 250 && nWeight < 500) disease.setLevel(2);
+                    else disease.setLevel(3);
+
                     if(!diseaseTransaction.update(disease)){
                         log.error("Error when updating disease");
                     }
@@ -134,6 +137,8 @@ public class CDCWebNotices {
                 }
             }
         }
+        diseaseTransaction.shutdown();
+        cdcTransaction.shutdown();
     }
 
     private static Set<CDCData> processBlockList(Element list, String alertLevel) {
@@ -198,7 +203,7 @@ public class CDCWebNotices {
         if(cdcDisease.equals("")){
             return null;
         }
-        return new CDCData(cdcDisease,cdcPlace, cdcDate, cdcDiseaseExtra, cdcPlaceExtra,
+        return new CDCData(new CDCDataKey(cdcDisease,cdcPlace, cdcDate), cdcDiseaseExtra, cdcPlaceExtra,
                             cdcDataLevel, CDCData.getWeightFromLevel(cdcDataLevel));
     }
 
@@ -216,7 +221,6 @@ public class CDCWebNotices {
     }
 
     private static void addOptions(Options options) {
-        options.addOption("o", true, "output directory");
         options.addOption("u", true, "url of CDC notices");
     }
 

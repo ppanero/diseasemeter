@@ -12,7 +12,5 @@ public class test {
 
     public static void main(String[] args){
 
-        GeneralTransaction<Disease> gt = new DiseaseTransaction();
-        System.out.println(gt.exists(new Disease("Ebola", "Sierra Leona","10/05/2015", "27/02/2016",3, 237834, 20, 3, true)));
     }
 }

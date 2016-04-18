@@ -1,5 +1,6 @@
 package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -8,20 +9,18 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "disease")
-public class Disease extends GeneralResource  implements Serializable{
+public class Disease extends GeneralResource<DiseaseKey>  implements Serializable{
 
-    @Id
-    @Column(name = "_name")
-    private String _name;
-    @Id
-    @Column(name = "_location")
-    private String _location;
+    @EmbeddedId
+    private DiseaseKey diseaseKey;
     @Column(name = "initial_date")
     private String initialDate;
     @Column(name = "last_update")
     private String lastUpdate;
     @Column(name = "level")
     private int level;
+    @Column(name = "weight")
+    private int weight;
     @Column(name = "twitter_count")
     private int tweetsCount;
     @Column(name = "news_count")
@@ -34,33 +33,25 @@ public class Disease extends GeneralResource  implements Serializable{
 
     public Disease() {}
 
-    public Disease(String name, String location, String initialDate, String lastUpdate, int level,
-                   int tweetsCount, int newsCount, int cdcCount, boolean isActive) {
-        this._name = name;
-        this._location = location;
+    public Disease(DiseaseKey diseaseKey, String initialDate, String lastUpdate, int level,
+                   int weight, int tweetsCount, int newsCount, int cdcCount, Boolean isActive) {
+        this.diseaseKey = diseaseKey;
         this.initialDate = initialDate;
         this.lastUpdate = lastUpdate;
         this.level = level;
+        this.weight = weight;
         this.tweetsCount = tweetsCount;
         this.newsCount = newsCount;
         this.cdcCount = cdcCount;
         this.isActive = isActive;
     }
 
-    public String get_name() {
-        return _name;
+    public DiseaseKey getDiseaseKey() {
+        return diseaseKey;
     }
 
-    public void set_name(String _name) {
-        this._name = _name;
-    }
-
-    public String get_location() {
-        return _location;
-    }
-
-    public void set_location(String _location) {
-        this._location = _location;
+    public void setDiseaseKey(DiseaseKey diseaseKey) {
+        this.diseaseKey = diseaseKey;
     }
 
     public String getInitialDate() {
@@ -87,6 +78,14 @@ public class Disease extends GeneralResource  implements Serializable{
         this.level = level;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public int getTweetsCount() {
         return tweetsCount;
     }
@@ -111,16 +110,23 @@ public class Disease extends GeneralResource  implements Serializable{
         this.cdcCount = cdcCount;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 
     @Override
     public Object[] getKeyValues() {
-        return new Object[]{this._name, this._location};
+        return new Object[]{this.diseaseKey};
     }
+
+    @Override
+    public DiseaseKey getKey(){
+        return this.diseaseKey;
+    }
+
+
 }

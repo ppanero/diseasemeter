@@ -37,7 +37,7 @@ public class DiseaseTransaction extends GeneralTransaction<Disease>{
     }
 
     /* Method to  READ all the employees */
-    public static List<Disease> listDiseases(String zone, String date){
+    public List<Disease> listDiseases(String zone, String date){
         Session session = MySQLController.getSessionFactory().openSession();
         Transaction tx = null;
         List<Disease> diseases = new ArrayList<Disease>();

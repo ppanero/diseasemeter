@@ -3,11 +3,12 @@
     //App
     <string name="app_name">Disease Checker</string>
     //Zone Tab
-    <string name="zone_hint">Filter by zone (i.e. Madrid)</string>
-    <string name="date_hint">Filter by date (DD-MM-YYYY)</string>
+    <string name="zone_hint">Filter by zone (i.e. Spain)</string>
+    <string name="date_hint">Filter by date (DD/
+        MM/YYYY)</string>
     <string name="zone_search_btn">Search</string>
     //Heat Map Tab
-    <string name="disease_hint">Filter by disease (i.e. Ebola)</string>
+    <string name="disease_hint">Filter by disease (i.e. Zika Virus)</string>
     <string name="disease_search_btn">Search</string>
     //Disease item
     <string name="twitter_icon_description">Twitter icon</string>

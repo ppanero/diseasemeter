@@ -55,7 +55,8 @@ public class ZoneTab extends Fragment {
         searchButton = (Button)rootView.findViewById(R.id.search_zone_btn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ZoneDateParam params = new ZoneDateParam(diseaseText.getText().toString(), dateText.getText().toString());
+                ZoneDateParam params = new ZoneDateParam(diseaseText.getText().toString().replace(" ", "+")
+                        , dateText.getText().toString());
                 ZoneDateParam[] myTaskParams = { params };
                 new RetriveZoneDataTask().execute(myTaskParams);
             }
@@ -106,11 +107,17 @@ public class ZoneTab extends Fragment {
                 for (ZoneDateParam param : params){
                     boolean withParams = false;
                     if (!param.getZone().equals("")) {
-                        if(!withParams) stringUrl = stringUrl.concat("?");
+                        if(!withParams){
+                            stringUrl = stringUrl.concat("?");
+                            withParams=true;
+                        }
                         stringUrl = stringUrl.concat("zone=").concat(param.getZone());
                     }
                     if(!param.getDate().equals("")){
-                        if(!withParams) stringUrl = stringUrl.concat("?");
+                        if(!withParams){
+                            stringUrl = stringUrl.concat("?");
+                            withParams=true;
+                        }
                         else stringUrl = stringUrl.concat("&");
                         stringUrl = stringUrl.concat("date=").concat(param.getDate());
                     }
@@ -141,8 +148,9 @@ public class ZoneTab extends Fragment {
                             DiseaseLevel dl = DiseaseLevel.values()[obj.getInt("level")];
                             if(!obj.getBoolean("active")) dl = DiseaseLevel.INACTIVE;
 
-                            ret.add(new DiseaseItem(obj.getString("name"), dl,
-                                    obj.getString("location").concat(",").concat(obj.getString("lastUpdate")),
+                            JSONObject diseaseKey = obj.getJSONObject("diseaseKey");
+                            ret.add(new DiseaseItem(diseaseKey.getString("name"), dl,
+                                    diseaseKey.getString("location").concat(",").concat(obj.getString("lastUpdate")),
                                     obj.getInt("tweetsCount"), obj.getInt("cdcCount"), obj.getInt("newsCount")));
                         }
                     }

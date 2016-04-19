@@ -66,7 +66,7 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
         searchButton = (Button)rootView.findViewById(R.id.search_disease_btn);
         searchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String param = diseaseText.getText().toString();
+                String param = diseaseText.getText().toString().replace(" ", "+");
                 new RetriveHeatmapDataTask().execute(param);
             }
         });
@@ -80,13 +80,13 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
         addHeatMap();
     }
 
-    /*private void addHeatMap(){
+    private void addHeatMap() {
         // Create the gradient.
-        int[] colors = { Color.rgb(102, 225, 0), // green
+        int[] colors = {Color.rgb(102, 225, 0), // green
                 Color.rgb(255, 0, 0)    // red
         };
 
-        float[] startPoints = { 0.2f, 1f};
+        float[] startPoints = {0.2f, 1f};
 
         Gradient gradient = new Gradient(colors, startPoints);
 
@@ -103,48 +103,7 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
         mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         mProvider.setOpacity(0.7);
         mOverlay.clearTileCache();
-    }*/
-    private void addHeatMap() {
-        List<WeightedLatLng> list = new ArrayList<WeightedLatLng>();
-
-        list.add(new WeightedLatLng(new LatLng(41.394640, 2.172455), 1000));
-        list.add(new WeightedLatLng(new LatLng(41.372307, 2.125695), 800));
-        list.add(new WeightedLatLng(new LatLng(41.449830, 2.225583), 600));
-        list.add(new WeightedLatLng(new LatLng(41.500640, 2.175555), 50));
-        list.add(new WeightedLatLng(new LatLng(41.444640, 2.022455), 100));
-        list.add(new WeightedLatLng(new LatLng(41.447440, 2.042455), 600));
-        list.add(new WeightedLatLng(new LatLng(41.398230, 2.172365), 1000));
-        list.add(new WeightedLatLng(new LatLng(41.379240, 2.042455), 60));
-        list.add(new WeightedLatLng(new LatLng(41.408680, 2.032595), 100));
-        list.add(new WeightedLatLng(new LatLng(41.392340, 2.012455), 90));
-        list.add(new WeightedLatLng(new LatLng(41.401230, 2.135875), 10));
-
-        // Create the gradient.
-        int[] colors = { Color.rgb(102, 225, 0), // green
-                Color.rgb(255, 0, 0)    // red
-        };
-
-        float[] startPoints = { 0.2f, 1f};
-
-        Gradient gradient = new Gradient(colors, startPoints);
-
-        // Create a heat mMap tile provider, passing it the latlngs of the police stations.
-        mProvider = new HeatmapTileProvider.Builder()
-                .weightedData(list)
-                .gradient(gradient)
-                .build();
-        // Add a tile overlay to the mMap, using the heat mMap tile provider.
-        mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-        mProvider.setOpacity(0.7);
-        mOverlay.clearTileCache();
-
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(41.401230, 2.135875))
-                .title("Ebola"));
     }
-
-
-
 
     public class RetriveHeatmapDataTask extends AsyncTask<String, Void, HeatmapItem>{
 
@@ -194,7 +153,7 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
                             JSONObject obj = jsondlist.getJSONObject(i);
                             //First iteration to get the center
                             JSONArray coordinates = (JSONArray) ((JSONObject)obj.get("location")).get("coordinates");
-                            points.add(new WeightedLatLng(new LatLng((Double)coordinates.get(0),(Double)coordinates.get(1)),
+                            points.add(new WeightedLatLng(new LatLng((Double)coordinates.get(1),(Double)coordinates.get(0)),
                                     obj.getInt("weight")));
                         }
 
@@ -206,7 +165,7 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
                             String name = obj.getString("name");
                             JSONArray coordinates = (JSONArray) ((JSONObject)obj.get("location")).get("coordinates");
                             markers.add(new MarkerOptions()
-                                    .position(new LatLng((Double)coordinates.get(0),(Double)coordinates.get(1)))
+                                    .position(new LatLng((Double)coordinates.get(1),(Double)coordinates.get(0)))
                                     .title(name));
                         }
 
@@ -232,7 +191,15 @@ public class HeatmapTab extends Fragment implements OnMapReadyCallback {
                 for(MarkerOptions marker : markers) {
                     mMap.addMarker(marker);
                 }
-                mProvider.setWeightedData(data.getPoints());
+                if (data.getPoints().isEmpty()) {
+                    WeightedLatLng basePoint = new WeightedLatLng(new LatLng(75.485566, 167.895584), 0);
+                    Set<WeightedLatLng> baseData = new HashSet<>();
+                    baseData.add(basePoint);
+                    mProvider.setWeightedData(baseData);
+                }
+                else {
+                    mProvider.setWeightedData(data.getPoints());
+                }
                 // Add a tile overlay to the mMap, using the heat mMap tile provider.
                 mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
                 mProvider.setOpacity(0.7);

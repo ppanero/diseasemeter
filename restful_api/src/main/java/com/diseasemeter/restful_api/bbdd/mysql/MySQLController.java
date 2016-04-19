@@ -1,5 +1,6 @@
 package com.diseasemeter.restful_api.bbdd.mysql;
 
+
 import com.diseasemeter.restful_api.resources.disease.Disease;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -25,4 +26,10 @@ public class MySQLController {
         }
         return sessionFactory;
     }
+
+    public static void shutdown(){
+        if(!sessionFactory.isClosed())
+            sessionFactory.close();
+    }
+
 }

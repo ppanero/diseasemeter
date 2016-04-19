@@ -1,28 +1,30 @@
 package com.diseasemeter.restful_api.resources.heatmap;
 
 /**
- * Created by Light on 14/04/16.
+ * coordinates[2]
+ * [0] is lng
+ * [1] is lat
  */
 public class Location {
 
-    private static final String type = "Point";
-    private double[] coordinates;
+    private final String type = "Point";
+    private Double[] coordinates;
 
     public Location() {}
 
-    public Location(double[] coordinates) {
+    public Location(Double[] coordinates) {
         this.coordinates = coordinates;
     }
 
-    public static String getType() {
+    public  String getType() {
         return type;
     }
 
-    public double[] getCoordinates() {
+    public Double[] getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(double[] coordinates) {
+    public void setCoordinates(Double[] coordinates) {
         this.coordinates = coordinates;
     }
 }

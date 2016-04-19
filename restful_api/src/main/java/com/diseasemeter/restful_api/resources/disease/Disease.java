@@ -1,28 +1,28 @@
 package com.diseasemeter.restful_api.resources.disease;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Light on 07/04/16.
  */
 @Entity
 @Table(name = "disease")
-public class Disease {
+public class Disease extends GeneralResource<DiseaseKey>  implements Serializable{
 
-
-    @Id @GeneratedValue
-    @Column(name = "_id")
-    private int _id;
-    @Column(name = "name")
-    private String name;
-    @Column(name = "location")
-    private String location;
+    @EmbeddedId
+    private DiseaseKey diseaseKey;
     @Column(name = "initial_date")
     private String initialDate;
     @Column(name = "last_update")
     private String lastUpdate;
     @Column(name = "level")
     private int level;
+    @Column(name = "weight")
+    private int weight;
     @Column(name = "twitter_count")
     private int tweetsCount;
     @Column(name = "news_count")
@@ -35,42 +35,25 @@ public class Disease {
 
     public Disease() {}
 
-    public Disease(int _id, String name, String location, String initialDate, String lastUpdate, int level,
-                   int tweetsCount, int newsCount, int cdcCount, boolean isActive) {
-        this._id = _id;
-        this.name = name;
-        this.location = location;
+    public Disease(DiseaseKey diseaseKey, String initialDate, String lastUpdate, int level,
+                   int weight, int tweetsCount, int newsCount, int cdcCount, Boolean isActive) {
+        this.diseaseKey = diseaseKey;
         this.initialDate = initialDate;
         this.lastUpdate = lastUpdate;
         this.level = level;
+        this.weight = weight;
         this.tweetsCount = tweetsCount;
         this.newsCount = newsCount;
         this.cdcCount = cdcCount;
         this.isActive = isActive;
     }
 
-    public int get_id() {
-        return _id;
+    public DiseaseKey getDiseaseKey() {
+        return diseaseKey;
     }
 
-    public void set_id(int _id) {
-        this._id = _id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setDiseaseKey(DiseaseKey diseaseKey) {
+        this.diseaseKey = diseaseKey;
     }
 
     public String getInitialDate() {
@@ -97,6 +80,14 @@ public class Disease {
         this.level = level;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public int getTweetsCount() {
         return tweetsCount;
     }
@@ -121,11 +112,24 @@ public class Disease {
         this.cdcCount = cdcCount;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
+
+    @Override
+    @JsonIgnore
+    public Object[] getKeyValues() {
+        return new Object[]{this.diseaseKey};
+    }
+
+    @Override
+    @JsonIgnore
+    public DiseaseKey getKey(){
+        return this.diseaseKey;
+    }
+
 }

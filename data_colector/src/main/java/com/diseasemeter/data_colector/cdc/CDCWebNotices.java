@@ -1,23 +1,27 @@
 package com.diseasemeter.data_colector.cdc;
 
+import com.diseasemeter.data_colector.bbdd.mongodb.GeneralOperation;
+import com.diseasemeter.data_colector.bbdd.mongodb.MongoComparation;
+import com.diseasemeter.data_colector.bbdd.mongodb.MongoDBController;
 import com.diseasemeter.data_colector.bbdd.mysql.CDCDataTransaction;
 import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
 import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.Center;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.HeatPoint;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.Location;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCData;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCDataKey;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.DiseaseKey;
-import com.diseasemeter.data_colector.common.MACRO;
-import com.diseasemeter.data_colector.common.UtilsCommon;
-import com.diseasemeter.data_colector.common.UtilsFS;
-import com.diseasemeter.data_colector.common.UtilsWeb;
-import org.apache.commons.beanutils.converters.IntegerConverter;
+import com.diseasemeter.data_colector.common.*;
+import com.diseasemeter.data_colector.google_api.Geocoder;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.mongodb.core.query.Criteria;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -135,6 +139,26 @@ public class CDCWebNotices {
                 if(!cdcTransaction.insert(alert)){
                     log.error("Error when inserting new cdc data");
                 }
+            }
+            GeneralOperation<Center> centerOperation = new GeneralOperation<Center>();
+            GeneralOperation<HeatPoint> heatpointOperation = new GeneralOperation<HeatPoint>();
+            String location = alert.getLocation();
+            if(alert.getLocationExtra() != null){
+                location = location.concat(MACRO.PLUS).concat(alert.getLocationExtra());
+            }
+            Double[] coordinates = Geocoder.geocode(location);
+
+            Set<Criteria> conditions = new HashSet<Criteria>();
+            conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, alert.getName()));
+            if(coordinates != null && !centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)){
+
+                long timestamp = UtilsCommon.getTimestampFromDate(outputDateFormat, alert.getDate());
+                centerOperation.insert(new Center(alert.getName(), location, timestamp, new Location(coordinates)));
+                heatpointOperation.insert(new HeatPoint(alert.getWeight(),timestamp, alert.getName(), location,
+                                            new Location(coordinates)));
+            }
+            else{
+                System.out.println(coordinates[0]+" "+coordinates[1]+" "+alert.getName());
             }
         }
         diseaseTransaction.shutdown();

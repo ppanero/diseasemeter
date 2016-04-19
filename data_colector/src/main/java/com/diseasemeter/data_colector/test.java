@@ -11,7 +11,5 @@ import com.diseasemeter.data_colector.bbdd.resources.mongodb.Location;
 public class test {
 
     public static void main(String[] args){
-
-        MongoDBController.insertCenter(new Center("test", "test", 12312312, new Location(new double[]{41.274941, -4.034504})));
     }
 }

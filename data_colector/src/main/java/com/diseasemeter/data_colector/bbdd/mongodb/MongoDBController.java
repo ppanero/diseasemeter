@@ -1,15 +1,9 @@
 package com.diseasemeter.data_colector.bbdd.mongodb;
 
-import com.diseasemeter.data_colector.bbdd.resources.mongodb.Center;
-import com.diseasemeter.data_colector.bbdd.resources.mongodb.HeatPoint;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
-import java.util.List;
 
 /**
  * Created by Light on 14/04/16.
@@ -21,36 +15,36 @@ public class MongoDBController {
     private static final ApplicationContext ctx = new GenericXmlApplicationContext("SpringConfig.xml");
     private static MongoOperations mongoOperation = (MongoOperations)ctx.getBean("mongoTemplate");
 
-    public static boolean existsCenter(Center center, int distance){
-        double[] coordinates = center.getLocation().getCoordinates();
-        Query filterCenters = new Query(Criteria.where("location").nearSphere(new Point(coordinates[0], coordinates[1])).maxDistance(distance));
-
-        return !mongoOperation.find(filterCenters, Center.class).isEmpty();
+    public static MongoOperations getMongoOperations(){
+        if(mongoOperation == null){
+            mongoOperation = (MongoOperations)ctx.getBean("mongoTemplate");
+        }
+        return mongoOperation;
     }
 
-    public static List<HeatPoint> filterHeatPointsByName(String name) {
-        Query filterByNameQuery = new Query(Criteria.where("name").is(name));
-        return mongoOperation.find(filterByNameQuery,HeatPoint.class);
-    }
+    public static Criteria createCriteria(String attr, MongoComparation cmp, Object value){
+        switch (cmp){
+            case EQ:
+                return Criteria.where(attr).is(value);
 
-    public static List<Center> filterCentersByName(String name){
-        Query filterByNameQuery = new Query(Criteria.where("name").is(name));
-        return mongoOperation.find(filterByNameQuery, Center.class);
-    }
+            case LT:
+                return Criteria.where(attr).lt(value);
 
-    public static void insertCenter(Center c){
-        mongoOperation.save(c);
-    }
+            case GT:
+                return Criteria.where(attr).gt(value);
 
-    public static void inserteHeatpoint(HeatPoint hp){
-        mongoOperation.save(hp);
-    }
+            case LTE:
+                return Criteria.where(attr).lte(value);
 
-    public static List<HeatPoint> getAllHeatpoints() {
-        return mongoOperation.findAll(HeatPoint.class);
-    }
+            case GTE:
+                return Criteria.where(attr).gte(value);
 
-    public static List<Center> getAllCenters(){
-        return mongoOperation.findAll(Center.class);
+            case NE:
+                return Criteria.where(attr).ne(value);
+
+            default:
+                return Criteria.where(attr).is(value);
+        }
+
     }
 }

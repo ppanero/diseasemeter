@@ -18,7 +18,7 @@ public class MACRO {
     public static final String EMPTY = "";
     public static final String TMP_DIR_NAME = "tmp";
     public static final String QUOTES = "\"";
-    public static final CharSequence PLUS = "+";
+    public static final String PLUS = "+";
 
     //----TWITTER----
     public static final String TWITTER_FILE_TAG = "twitter_stream";

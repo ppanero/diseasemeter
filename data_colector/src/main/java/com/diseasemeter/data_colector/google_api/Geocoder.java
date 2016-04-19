@@ -50,7 +50,7 @@ public class Geocoder {
                     JSONObject geometry = (JSONObject) ((JSONObject)results.get(0)).get("geometry");
                     JSONObject location = geometry.getJSONObject("location");
 
-                    return new Double[]{location.getDouble("lat"), location.getDouble("lng")};
+                    return new Double[]{ location.getDouble("lng"), location.getDouble("lat")};
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

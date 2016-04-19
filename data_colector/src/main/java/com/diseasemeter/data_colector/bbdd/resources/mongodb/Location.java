@@ -1,16 +1,18 @@
 package com.diseasemeter.data_colector.bbdd.resources.mongodb;
 
 /**
- * Created by Light on 14/04/16.
+ * coordinates[2]
+ * [0] is lng
+ * [1] is lat
  */
 public class Location {
 
     private final String type = "Point";
-    private double[] coordinates;
+    private Double[] coordinates;
 
     public Location() {}
 
-    public Location(double[] coordinates) {
+    public Location(Double[] coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -18,11 +20,11 @@ public class Location {
         return type;
     }
 
-    public double[] getCoordinates() {
+    public Double[] getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(double[] coordinates) {
+    public void setCoordinates(Double[] coordinates) {
         this.coordinates = coordinates;
     }
 }

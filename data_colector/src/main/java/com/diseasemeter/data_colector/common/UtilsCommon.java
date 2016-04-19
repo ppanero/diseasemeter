@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class UtilsCommon {
 
     private static Logger log = Logger.getLogger(UtilsCommon.class);
-    private static final String IN_BRACKETS_REGEX_ = "\\(\\w*\\)";
+    private static final String IN_BRACKETS_REGEX_ = "\\(.*\\)";
     private static final Pattern pattern = Pattern.compile(IN_BRACKETS_REGEX_);
 
     public static String formatDate(String date, String inputFormat, String outputFormat){
@@ -26,10 +26,22 @@ public class UtilsCommon {
         SimpleDateFormat insdf = new SimpleDateFormat(inputFormat), outsdf = new SimpleDateFormat(outputFormat);
         try {
             cal.setTime(insdf.parse(date));
-            return outsdf.format(cal.getTime()).toString();
+            return outsdf.format(cal.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
             return "1970-01-01 01:00:00"; //Unix init time
+        }
+    }
+
+    public static long getTimestampFromDate(String format, String date){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(format);
+        try{
+            cal.setTime(dateFormatter.parse(date));
+            return cal.getTimeInMillis();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return System.currentTimeMillis();
         }
     }
 

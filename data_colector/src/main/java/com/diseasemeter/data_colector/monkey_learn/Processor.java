@@ -16,7 +16,6 @@ import java.util.List;
 public class Processor {
 
     private static final String LANGUANGE_DETECTION_ID = "cl_oJNMkt2V";
-    private static final String KEYWORD_EXTRACTION_ID = "";
     private static final String ENGLISH_SENTIMENT_ID = "cl_qkjxv9Ly";
     private static final String SPANISH_SENTIMENT_ID = "cl_u9PRHNzf";
     private static final String SPANISH_LANG = "Spanish-es";
@@ -94,39 +93,5 @@ public class Processor {
             ret.add(result); //1 positive, 0 neutral, -1 negative
         }
         return ret;
-    }
-
-    /**
-     * Returns a disease weight according to the level value (1,2,3 for cdc
-     * or -1 (negative), 0 (neutral), 1 (positive) for newspaper and twitter data)
-     * and its source
-     *
-     * @param source - cdc 1, newspaper 2, twitter 3
-     * @param level - disease level or sentiment
-     * @return disease weight
-     */
-    public static int getWeight(int source, int level){
-        switch (source){
-            /*case 1: //cdc
-                if(level == 1) return 100;
-                else if (level == 2) return 250;
-                else if (level == 3) return 500;
-                else return 0;*/
-
-            case 2: //newspaper
-                if(level == 0) return 20; //nuetral
-                else if (level == 1) return -40; //positive
-                else if (level == -1) return 50; //negative
-                else return 0;
-
-            case 3: //twitter
-                if(level == 0) return 10; //nuetral
-                else if (level == 1) return -20; //positive
-                else if (level == -1) return 30; //negative
-                else return 0;
-
-            default:
-                return 0;
-        }
     }
 }

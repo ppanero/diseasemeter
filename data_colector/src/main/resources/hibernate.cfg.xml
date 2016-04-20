@@ -13,5 +13,6 @@
         <property name="hibernate.transaction.flush_before_completion">true</property>
         <property name="hibernate.connection.autocommit">false</property>
         <property name="hibernate.connection.release_mode">after_transaction</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
     </session-factory>
 </hibernate-configuration>

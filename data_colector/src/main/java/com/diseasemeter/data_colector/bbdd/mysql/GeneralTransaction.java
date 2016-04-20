@@ -6,9 +6,13 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.*;
+import org.hibernate.transform.Transformers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -18,6 +22,10 @@ public abstract class GeneralTransaction<K extends GeneralResource> {
 
 
     public abstract Object[] getKeyColumnNames();
+
+    public void shutdown(){
+        MySQLController.shutdown();
+    }
 
     public boolean insert(K data){
         Session session = MySQLController.getSessionFactory().openSession();
@@ -110,8 +118,23 @@ public abstract class GeneralTransaction<K extends GeneralResource> {
         return object;
     }
 
-    public void shutdown(){
-        MySQLController.shutdown();
+    public List<K> getAll(Class<K> kClass){
+        Session session = MySQLController.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(kClass);
+
+
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            List list = criteria.list();
+            tx.commit();
+            return list;
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            return new ArrayList<K>();
+        }finally {
+            session.close();
+        }
     }
 
 }

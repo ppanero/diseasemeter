@@ -12,9 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Light on 16/12/15.
@@ -30,8 +28,8 @@ public class TwentyMinutosNewspaper extends Newspaper {
     }
 
     @Override
-    public Set<String> getWebConent() {
-        Set<String> news = new HashSet<String>();
+    public List<News> getWebConent() {
+        List<News> news = new ArrayList<News>();
         try {
             Document doc = Jsoup.connect(url).get();
             Elements newsElems = doc.select("#content .title");
@@ -43,9 +41,7 @@ public class TwentyMinutosNewspaper extends Newspaper {
                 if(strTitle.equals(MACRO.EMPTY)) strTitle = MACRO.MISSING_VALUE;
                 if(!UtilsWeb.isValidUrl(link)) link = MACRO.MISSING_VALUE;
 
-                news.add(strTitle.concat(MACRO.FILE_SEPARATOR)
-                        .concat(strTopic).concat(MACRO.FILE_SEPARATOR)
-                        .concat(link));
+                news.add(new News(link, strTitle, strTopic, null));
 
             }
         } catch (IOException e) {
@@ -59,8 +55,8 @@ public class TwentyMinutosNewspaper extends Newspaper {
     public static void main(String[] args){
         String outDir = "";
         //Read input arguments
-        if (args.length != 4) {
-            System.out.printf("Usage: TwentyMinutosNewspaper -o <output dir> -u <url> \n");
+        if (args.length != 2) {
+            System.out.printf("Usage: TwentyMinutosNewspaper -u <url> \n");
             log.error("Exit program with code (-1). Insufficient calling arguments");
             System.exit(-1);
         }
@@ -71,22 +67,15 @@ public class TwentyMinutosNewspaper extends Newspaper {
 
         Map<String, String> parsedArgs = UtilsCommon.getArgs(options, args);
 
-        String outVal = parsedArgs.get("o");
-        if(outVal != null && !outVal.equals(MACRO.SPACE)){
-            outDir = UtilsFS.preparePath(outVal, false);
-            log.debug("Output directory set to: " + outDir);
-        }
-
         String webUrl = parsedArgs.get("u");
         if(webUrl != null && !webUrl.equals(MACRO.SPACE) && UtilsWeb.isValidUrl(webUrl)){
             newspaper.setUrl(webUrl);
         }
 
-        newspaper.saveNews(newspaper.getWebConent(), outDir , BASE_FILENAME);
+        newspaper.saveNews(newspaper.getWebConent());
     }
 
     private static void addOptions(Options options) {
-        options.addOption("o", true, "output directory");
         options.addOption("u", true, "url of 20 minutos newspaper health section");
     }
 }

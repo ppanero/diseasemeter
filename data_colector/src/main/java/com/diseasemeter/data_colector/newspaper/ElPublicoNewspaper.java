@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,7 +30,7 @@ public class ElPublicoNewspaper extends Newspaper {
     }
 
     @Override
-    public Set<String> getWebConent() {
+    public List<News> getWebConent() {
         Set<String> news = new HashSet<String>();
         try {
             Document doc = Jsoup.connect(url).get();
@@ -51,7 +52,7 @@ public class ElPublicoNewspaper extends Newspaper {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return news;
+        return null;
     }
 
 
@@ -92,7 +93,7 @@ public class ElPublicoNewspaper extends Newspaper {
             }
         }
 
-        newspaper.saveNews(newspaper.getWebConent(), outDir , BASE_FILENAME);
+        newspaper.saveNews(newspaper.getWebConent());
     }
 
     private static void addOptions(Options options) {

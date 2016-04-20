@@ -33,6 +33,12 @@ public class UtilsCommon {
         }
     }
 
+    public static String getCurrentDate(String format){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(format);
+        return dateFormatter.format(cal.getTime());
+    }
+
     public static long getTimestampFromDate(String format, String date){
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat dateFormatter = new SimpleDateFormat(format);

@@ -140,6 +140,20 @@ public class CDCWebNotices {
                     log.error("Error when inserting new cdc data");
                 }
             }
+            else{//Update lastUpdate
+                Disease disease = new Disease(new DiseaseKey(alert.getName(), alert.getLocation()), alert.getDate(),
+                        alert.getDate(), alert.getLevel(), alert.getWeight(), 0, 0, 1, true);
+                //We assume the disease exists, because the alert exists (fk constraint in mysql)
+                disease = diseaseTransaction.findByKey(disease);
+                //disease.setCdcCount(disease.getCdcCount()+1);
+                disease.setLastUpdate(UtilsCommon.getCurrentDate(outputDateFormat));
+
+                if(!diseaseTransaction.update(disease)){
+                    log.error("Error when updating disease");
+                }
+
+
+            }
             GeneralOperation<Center> centerOperation = new GeneralOperation<Center>();
             GeneralOperation<HeatPoint> heatpointOperation = new GeneralOperation<HeatPoint>();
             String location = alert.getLocation();
@@ -156,9 +170,6 @@ public class CDCWebNotices {
                 centerOperation.insert(new Center(alert.getName(), location, timestamp, new Location(coordinates)));
                 heatpointOperation.insert(new HeatPoint(alert.getWeight(),timestamp, alert.getName(), location,
                                             new Location(coordinates)));
-            }
-            else{
-                System.out.println(coordinates[0]+" "+coordinates[1]+" "+alert.getName());
             }
         }
         diseaseTransaction.shutdown();

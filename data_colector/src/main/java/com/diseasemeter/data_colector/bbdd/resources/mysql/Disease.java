@@ -33,6 +33,18 @@ public class Disease extends GeneralResource<DiseaseKey>  implements Serializabl
 
     public Disease() {}
 
+    public Disease(DiseaseKey diseaseKey) {
+        this.diseaseKey = diseaseKey;
+        this.initialDate = "";
+        this.lastUpdate = "";
+        this.level = -1;
+        this.weight = -1;
+        this.tweetsCount = -1;
+        this.newsCount = -1;
+        this.cdcCount = -1;
+        this.isActive = false;
+    }
+
     public Disease(DiseaseKey diseaseKey, String initialDate, String lastUpdate, int level,
                    int weight, int tweetsCount, int newsCount, int cdcCount, Boolean isActive) {
         this.diseaseKey = diseaseKey;

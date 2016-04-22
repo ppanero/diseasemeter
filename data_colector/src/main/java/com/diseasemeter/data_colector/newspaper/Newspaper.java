@@ -15,6 +15,7 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.PairFlatMapFunction;
 import scala.Tuple2;
 
 import java.io.Serializable;
@@ -33,11 +34,9 @@ public abstract class Newspaper implements Serializable {
     protected String url;
 
     //Spark functions
-    private FlatMapFunction<Disease,String> processDiseaseNames;
-    private Function<Tuple2<News, String>, Boolean> newsContainsDisease;
-    private Function<Tuple2<News, String>, Tuple2<News, String>> obtainValues;
-    private FlatMapFunction<String,String> addTranslations;
-    private FlatMapFunction<Tuple2<News, String>, Tuple2<News, Disease>> obtainDiseases;
+    private PairFlatMapFunction<Disease,String,String> processDiseaseNames;
+    private PairFlatMapFunction<Tuple2<String,String>,String,String> addTranslations;
+
 
     public Newspaper(){
         this.url = "";
@@ -66,16 +65,18 @@ public abstract class Newspaper implements Serializable {
         GeneralTransaction<Disease> diseaseGeneralTransaction = new DiseaseTransaction();
         List<Disease> diseaseList = diseaseGeneralTransaction.getAll(Disease.class);
 
+        JavaPairRDD<String, String> diseaseNames = sc.parallelize(diseaseList)
+                                                    .flatMapToPair(processDiseaseNames).distinct()
+                                                    .flatMapToPair(addTranslations).distinct().cache();
 
-        JavaRDD<String> diseaseNames = sc.parallelize(diseaseList).flatMap(processDiseaseNames).distinct();
-        JavaRDD<String> diseaseNamesWithTranslation = diseaseNames.flatMap(addTranslations).distinct();
-        JavaPairRDD<News, String> newsJoinDiseases = sc.parallelize(news).cartesian(diseaseNamesWithTranslation).filter(newsContainsDisease);
-        JavaRDD<Tuple2<News, String>> processedNews = newsJoinDiseases.map(obtainValues);
-        JavaRDD<Tuple2<News, Disease>> newsAndDisease = processedNews.flatMap(obtainDiseases).cache();
-        Iterator<Tuple2<News, Disease>> it2 = newsAndDisease.toLocalIterator();
+        //JavaRDD<String> diseaseNamesWithTranslation = diseaseNames;
+        //JavaPairRDD<News, String> newsJoinDiseases = sc.parallelize(news).cartesian(diseaseNamesWithTranslation).filter(newsContainsDisease);
+        //JavaRDD<Tuple2<News, String>> processedNews = newsJoinDiseases.map(obtainValues);
+        //JavaRDD<Tuple2<News, Disease>> newsAndDisease = processedNews.flatMap(obtainDiseases).cache();
+        Iterator<Tuple2<String, String>> it2 = diseaseNames.toLocalIterator();
         while(it2.hasNext()){
-            Tuple2<News, Disease> t = it2.next();
-            System.out.println(t._1().getTitle()+" "+t._2().getDiseaseKey().getName());
+            Tuple2<String, String> t = it2.next();
+            System.out.println(t._1()+" "+t._2());
         }
         diseaseGeneralTransaction.shutdown();
         sc.stop();
@@ -84,37 +85,54 @@ public abstract class Newspaper implements Serializable {
 
     private void init() {
 
-        processDiseaseNames = new FlatMapFunction<Disease, String>() {
-            @Override
-            public Iterable<String> call(Disease disease) throws Exception {
-                Set<String> ret = new HashSet<String>();
+        processDiseaseNames = new PairFlatMapFunction<Disease,String,String>() {
 
-                String[] parts = disease.getDiseaseKey().getName().split(MACRO.SPACE);
-                Processor.Processor();
+            @Override
+            public Iterable<Tuple2<String, String>> call(Disease disease) throws Exception {
+                Set<Tuple2<String, String>> ret = new HashSet<Tuple2<String, String>>();
+
+                String diseaseName = disease.getDiseaseKey().getName();
+                String[] parts = diseaseName.split(MACRO.SPACE);
                 for(String part : parts){
-                    ret.add(part.trim());
+                    ret.add(new Tuple2<String, String>(part.trim(), diseaseName));
                 }
-                ret.add(disease.getDiseaseKey().getName());
+                ret.add(new Tuple2<String, String>(diseaseName, diseaseName));
 
                 return ret;
             }
         };
 
-        addTranslations = new FlatMapFunction<String,String>() {
+        addTranslations = new PairFlatMapFunction<Tuple2<String,String>,String,String>(){
+
             @Override
-            public Iterable<String> call(String s) throws Exception {
-                Set<String> ret = new HashSet<String>();
+            public Iterable<Tuple2<String, String>> call(Tuple2<String, String> stringStringTuple2) throws Exception {
+                Set<Tuple2<String, String>> ret = new HashSet<Tuple2<String, String>>();
 
-                Iterator<Integer> partsLanguage = Processor.detectLanguage(new String[]{s}).iterator();
+                Integer[] partsLanguage = new Integer[2];
+                Processor.Processor();
+                Processor.detectLanguage(new String[]{stringStringTuple2._1(), stringStringTuple2._2()}).toArray(partsLanguage);
 
-                if (partsLanguage.hasNext() && partsLanguage.next() == 1) {
-                    String translation = Translator.translate(s.trim());
-                    ret.add(translation);
+                boolean es = false;
+                if(partsLanguage != null && partsLanguage.length == 2){
+                    String key = stringStringTuple2._1();
+                    String val = stringStringTuple2._2();
+                    if(partsLanguage[0] == 1){
+                        es = true;
+                        key = Translator.translate(stringStringTuple2._1().trim());
+                    }
+                    if(partsLanguage[1] == 1){
+                        es = true;
+                        val = Translator.translate(stringStringTuple2._2().trim());
+                    }
+                    ret.add(new Tuple2<String, String>(key, val));
+                }
+                if(es){
+                    ret.add(new Tuple2<String, String>(stringStringTuple2._1(), stringStringTuple2._2()));
                 }
                 return ret;
             }
         };
-
+        /*
         newsContainsDisease = new Function<Tuple2<News, String>, Boolean>() {
             @Override
             public Boolean call(Tuple2<News, String> newsStringTuple2) throws Exception {
@@ -168,7 +186,7 @@ public abstract class Newspaper implements Serializable {
                 }
                 return ret;
             }
-        };
+        };*/
     }
 
 }

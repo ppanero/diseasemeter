@@ -1,8 +1,9 @@
 package com.diseasemeter.data_colector.newspaper;
 
+import com.diseasemeter.data_colector.bbdd.resources.mysql.News;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.NewsKey;
 import com.diseasemeter.data_colector.common.MACRO;
 import com.diseasemeter.data_colector.common.UtilsCommon;
-import com.diseasemeter.data_colector.common.UtilsFS;
 import com.diseasemeter.data_colector.common.UtilsWeb;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
@@ -21,10 +22,10 @@ public class TwentyMinutosNewspaper extends Newspaper {
 
 
     private static Logger log = Logger.getLogger(TwentyMinutosNewspaper.class);
-    private static final String BASE_FILENAME = "20minutos";
+    private static final String SOURCE = "20MINUTOS";
 
     public TwentyMinutosNewspaper(String url) {
-        super(url);
+        super(url, SOURCE);
     }
 
     @Override
@@ -34,14 +35,13 @@ public class TwentyMinutosNewspaper extends Newspaper {
             Document doc = Jsoup.connect(url).get();
             Elements newsElems = doc.select("#content .title");
             for(Element singleNew : newsElems) {
-                String strTopic = MACRO.MISSING_VALUE;
                 String strTitle = singleNew.attr("title");
                 String link = singleNew.attr("href");
                 //if(strTopic.equals(MACRO.EMPTY)) strTopic = MACRO.MISSING_VALUE; //Not needed in this case
                 if(strTitle.equals(MACRO.EMPTY)) strTitle = MACRO.MISSING_VALUE;
                 if(!UtilsWeb.isValidUrl(link)) link = MACRO.MISSING_VALUE;
 
-                news.add(new News(link, strTitle, strTopic, null));
+                news.add(new News(new NewsKey(strTitle, null), link, null, SOURCE));
 
             }
         } catch (IOException e) {

@@ -1,5 +1,7 @@
 package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,9 @@ import java.io.Serializable;
  */
 public abstract class GeneralResource<T extends Serializable>{
 
+    @JsonIgnore
     public abstract Object[] getKeyValues();
 
+    @JsonIgnore
     public abstract T getKey();
 }

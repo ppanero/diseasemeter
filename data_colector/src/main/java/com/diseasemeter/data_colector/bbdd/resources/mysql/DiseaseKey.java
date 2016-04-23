@@ -2,6 +2,7 @@ package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import java.io.Serializable;
 
@@ -9,6 +10,8 @@ import java.io.Serializable;
  * Created by Light on 18/04/16.
  */
 public class DiseaseKey implements Serializable{
+    @JsonIgnore
+    private static final String NO_LOCATION = "NO LOCATION";
 
     private String _name;
     private String _location;
@@ -18,7 +21,10 @@ public class DiseaseKey implements Serializable{
 
     public DiseaseKey(String _name, String _location) {
         this._name = _name;
-        this._location = _location;
+        if(_location == null)
+            this._location = NO_LOCATION;
+        else
+            this._location = _location;
     }
 
     public String getName() {
@@ -55,5 +61,9 @@ public class DiseaseKey implements Serializable{
         hcb.append(_location);
 
         return hcb.toHashCode();
+    }
+
+    public boolean noLocation() {
+        return this._location.equals(NO_LOCATION);
     }
 }

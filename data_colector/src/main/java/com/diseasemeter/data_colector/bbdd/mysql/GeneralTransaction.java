@@ -1,6 +1,7 @@
 package com.diseasemeter.data_colector.bbdd.mysql;
 
 
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.GeneralResource;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -136,5 +137,4 @@ public abstract class GeneralTransaction<K extends GeneralResource> {
             session.close();
         }
     }
-
 }

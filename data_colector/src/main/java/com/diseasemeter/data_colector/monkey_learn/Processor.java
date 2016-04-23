@@ -23,7 +23,8 @@ public class Processor {
     private static final String POSITIVE_SENTIMENT = "positive";
     private static final String NEGATIVE_SENTIMENT = "negative";
     private static final String NEUTRAL_SENTIMENT = "neutral";
-    private static final String ENTITY_TAG = "tag";
+    private static final String JSON_TAG = "tag";
+    private static final String JSON_ENTITY = "entity";
     private static final String ENTITY_LOCATION_ENG = "LOCATION";
     private static final String ENTITY_LOCATION_ESP = "LUG";
     private static MonkeyLearn ml;
@@ -118,8 +119,8 @@ public class Processor {
             Iterator it = array.iterator();
             while(it.hasNext()){
                 JSONObject obj = (JSONObject) it.next();
-                if(obj.get(ENTITY_TAG).toString().toUpperCase().equals(entity_location)){
-                    result.add(obj.get(ENTITY_TAG).toString());
+                if(obj.get(JSON_TAG).toString().toUpperCase().equals(entity_location)){
+                    result.add(obj.get(JSON_ENTITY).toString());
                 }
             }
         }

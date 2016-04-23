@@ -128,9 +128,7 @@ public class CDCWebNotices {
                     disease.setCdcCount(disease.getCdcCount()+1);
                     int nWeight = disease.getWeight() + alert.getWeight();
                     disease.setWeight(nWeight);
-                    if(nWeight < 250) disease.setLevel(1);
-                    else if (nWeight >= 250 && nWeight < 500) disease.setLevel(2);
-                    else disease.setLevel(3);
+                    disease.setLevel(Disease.getLevelFromNewWeight(nWeight));
 
                     if(!diseaseTransaction.update(disease)){
                         log.error("Error when updating disease");
@@ -145,13 +143,12 @@ public class CDCWebNotices {
                         alert.getDate(), alert.getLevel(), alert.getWeight(), 0, 0, 1, true);
                 //We assume the disease exists, because the alert exists (fk constraint in mysql)
                 disease = diseaseTransaction.findByKey(disease);
-                //disease.setCdcCount(disease.getCdcCount()+1);
+                disease.setCdcCount(disease.getCdcCount()+1);
                 disease.setLastUpdate(UtilsCommon.getCurrentDate(outputDateFormat));
 
                 if(!diseaseTransaction.update(disease)){
                     log.error("Error when updating disease");
                 }
-
 
             }
             GeneralOperation<Center> centerOperation = new GeneralOperation<Center>();
@@ -164,10 +161,11 @@ public class CDCWebNotices {
 
             Set<Criteria> conditions = new HashSet<Criteria>();
             conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, alert.getName()));
-            if(coordinates != null && !centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)){
-
+            if(coordinates != null) {
                 long timestamp = UtilsCommon.getTimestampFromDate(outputDateFormat, alert.getDate());
-                centerOperation.insert(new Center(alert.getName(), location, timestamp, new Location(coordinates)));
+                if(!centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)) {
+                    centerOperation.insert(new Center(alert.getName(), location, timestamp, new Location(coordinates)));
+                }
                 heatpointOperation.insert(new HeatPoint(alert.getWeight(),timestamp, alert.getName(), location,
                                             new Location(coordinates)));
             }

@@ -50,24 +50,27 @@ CREATE TABLE IF NOT EXISTS `cdc_data` (
     ON UPDATE CASCADE)
 
 -- -----------------------------------------------------
--- Table `social_data`
+-- Table `news`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `social_data` (
-  `_id` INT NOT NULL AUTO_INCREMENT,
-  `disease_id` INT NOT NULL,
-  `location` VARCHAR(45) NOT NULL,
-  `date` VARCHAR(10) NOT NULL,
+CREATE TABLE IF NOT EXISTS `news` (
+  `_title` VARCHAR(300) NOT NULL,
+  `_disease` VARCHAR(45) NOT NULL,
   `source` INT NOT NULL,
-  `content` VARCHAR(200) NOT NULL,
   `language` INT NOT NULL,
   `sentiment` INT NOT NULL,
-  PRIMARY KEY (`_id`),
-  INDEX `fk_social_data_disease_idx` (`disease_id` ASC),
-  CONSTRAINT `fk_social_data_disease`
-    FOREIGN KEY (`disease_id`)
-    REFERENCES `disease` (`_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `weight` INT NOT NULL,
+  `content` VARCHAR(300),
+  `topic` VARCHAR(100),
+  `url` VARCHAR(100),
+  `location` VARCHAR(45),
+  `date` VARCHAR(10),
+  PRIMARY KEY (`_title`, `_disease`),
+  INDEX `fk_news_disease_idx` (`_disease`, `location`),
+  CONSTRAINT `fk_news_disease_idx`
+    FOREIGN KEY (`_disease`, `location`)
+    REFERENCES `disease` (`_name`, `_location`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 
 
 

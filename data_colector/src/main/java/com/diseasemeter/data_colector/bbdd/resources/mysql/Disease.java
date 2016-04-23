@@ -1,6 +1,8 @@
 package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
 
+import com.diseasemeter.data_colector.common.UtilsCommon;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -10,6 +12,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "disease")
 public class Disease extends GeneralResource<DiseaseKey>  implements Serializable{
+
+    private static final String outputDateFormat = "dd/MM/yyyy";
 
     @EmbeddedId
     private DiseaseKey diseaseKey;
@@ -35,14 +39,14 @@ public class Disease extends GeneralResource<DiseaseKey>  implements Serializabl
 
     public Disease(DiseaseKey diseaseKey) {
         this.diseaseKey = diseaseKey;
-        this.initialDate = "";
-        this.lastUpdate = "";
-        this.level = -1;
-        this.weight = -1;
-        this.tweetsCount = -1;
-        this.newsCount = -1;
-        this.cdcCount = -1;
-        this.isActive = false;
+        this.initialDate = UtilsCommon.getCurrentDate(outputDateFormat);
+        this.lastUpdate = UtilsCommon.getCurrentDate(outputDateFormat);
+        this.level = 1;
+        this.weight = 0;
+        this.tweetsCount = 0;
+        this.newsCount = 0;
+        this.cdcCount = 0;
+        this.isActive = true;
     }
 
     public Disease(DiseaseKey diseaseKey, String initialDate, String lastUpdate, int level,
@@ -140,5 +144,15 @@ public class Disease extends GeneralResource<DiseaseKey>  implements Serializabl
         return this.diseaseKey;
     }
 
+    @Override
+    public String toString(){
+        return "Name: ".concat(this.diseaseKey.getName()).concat("\n").concat(
+                "Location: ").concat(this.diseaseKey.getLocation()).concat("\n");
+    }
 
+    public static int getLevelFromNewWeight(int nWeight){
+        if(nWeight < 250) return 1;
+        else if (nWeight >= 250 && nWeight < 500) return 2;
+        else return 3;
+    }
 }

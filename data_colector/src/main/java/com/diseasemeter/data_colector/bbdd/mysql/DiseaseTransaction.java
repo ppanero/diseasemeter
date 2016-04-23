@@ -3,13 +3,12 @@ package com.diseasemeter.data_colector.bbdd.mysql;
 
 
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -73,6 +72,28 @@ public class DiseaseTransaction extends GeneralTransaction<Disease>{
             session.close();
         }
         return diseases;
+    }
+
+
+    public List<Disease> getAllByName(Disease disease) {
+        Session session = MySQLController.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(disease.getClass());
+
+        criteria.add(Restrictions.eq("diseaseKey._name", disease.getDiseaseKey().getName()));
+
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            List<Disease> list = criteria.list();
+            tx.commit();
+            return list;
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            return new ArrayList<Disease>();
+        }finally {
+            session.close();
+        }
+
     }
 
     private static boolean isDateFormatted(String date) {

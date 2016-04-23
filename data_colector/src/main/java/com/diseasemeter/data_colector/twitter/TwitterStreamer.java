@@ -1,22 +1,28 @@
 package com.diseasemeter.data_colector.twitter;
 
 
-import com.diseasemeter.data_colector.common.MACRO;
-import com.diseasemeter.data_colector.common.UtilsFS;
-import com.diseasemeter.data_colector.common.UtilsSpark;
-import com.diseasemeter.data_colector.common.UtilsTwitter;
+import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
+import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
+import com.diseasemeter.data_colector.common.*;
+import com.diseasemeter.data_colector.microsoft_api.Translator;
+import com.diseasemeter.data_colector.monkey_learn.Processor;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.streaming.Duration;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
+import scala.Tuple2;
 import twitter4j.Status;
 
 import java.io.Serializable;
@@ -42,27 +48,13 @@ public class TwitterStreamer implements Serializable {
 
     private static Logger log = Logger.getLogger(TwitterStreamer.class);
     private static final String[] FILES_TO_AVOID = {"SUCCESS", "CRC" ,"crc"};
-    private Function<JavaRDD<String>, Void> saveFileFunction;
-    private FlatMapFunction<Status, String> tweetFormatter;
-    private Broadcast<String> bTmpDir;
-    private Broadcast<String> bOutputDir;
     private Broadcast<String[]> bFilters;
 
-    public String getbOutputDir() {
-        return bOutputDir.getValue();
-    }
-
-    public void setbOutputDir(Broadcast<String> bOutputDir) {
-        this.bOutputDir = bOutputDir;
-    }
-
-    public String getbTmpDir() {
-        return bTmpDir.getValue();
-    }
-
-    public void setbTmpDir(Broadcast<String> bTmpDir) {
-        this.bTmpDir = bTmpDir;
-    }
+    //Spark functions
+    private FlatMapFunction<Disease,String> processDiseaseNames;
+    private FlatMapFunction<String,String> addTranslations;
+    private Function<JavaRDD<String>, Void> saveFileFunction;
+    private FlatMapFunction<Status, String> tweetFormatter;
 
     public String[] getbFilters() {
         return bFilters.getValue();
@@ -74,12 +66,11 @@ public class TwitterStreamer implements Serializable {
 
     public static void main(String[] args) {
 
-        String outpurDir = "", sparkMaster = "";
-        Set<String> fSet = new HashSet<String>();
+        String sparkMaster = "";
         int interval = MACRO.TWEETER_DEFAULT_INTERVAL;
         //Read input arguments
-        if (args.length != 8) {
-            System.out.printf("Usage: TwitterStreamer -o <output dir> -f <commma separated list of filters>" +
+        if (args.length != 4) {
+            System.out.printf("Usage: TwitterStreamer" +
                     "-m <spark master [ local[n] | yarn-client |  yarn-cluster ] > " +
                     "-t <tweets' time interval in milliseconds> \n");
             log.error("Exit program with code (-1). Insufficient calling arguments");
@@ -87,92 +78,119 @@ public class TwitterStreamer implements Serializable {
         }
         // create Options object
         Options options = new Options();
-        CommandLineParser parser = new PosixParser();
-        CommandLine cmd = null;
         addOptions(options);
         TwitterStreamer twitterStreamer = new TwitterStreamer();
-        try {
-            cmd = parser.parse( options, args);
-        }catch (ParseException e) {
-            log.error("Exit program with code (-2). Error parsing options");
-            System.exit(-2);
-        }
-        if(cmd != null){
-            if(cmd.hasOption("o")) {
-                String outVal = cmd.getOptionValue("o");
-                if(outVal != null){
-                    outpurDir = UtilsFS.preparePath(outVal, false);
-                    log.debug("Output directory set to: " + outpurDir);
-                }
-            }
-            if(cmd.hasOption("t")) {
-                String tInterval = cmd.getOptionValue("t");
-                if(tInterval != null){
-                    interval = Integer.parseInt(tInterval);
-                    log.debug("Streaming interval set to: " + interval + " milliseconds");
-                }
-            }
-            if(cmd.hasOption("m")) {
-                String sMaster = cmd.getOptionValue("m");
-                if(sMaster != null){
-                    if(UtilsSpark.checkSparkMaster(sMaster)) {
-                        sparkMaster = sMaster;
-                    }
-                    else{
-                        sparkMaster = MACRO.TWEETER_STREAMER_DEFAULT_MASTER;
-                    }
-                    log.debug("Spark master set to: " + sparkMaster);
-                }
-            }
-            if(cmd.hasOption("f")) {
-                String filtersLine = cmd.getOptionValue("f");
-                if(filtersLine != null){
-                    fSet = UtilsTwitter.parseLine(filtersLine);
-                }
-            }
+
+        Map<String, String> parsedArgs = UtilsCommon.getArgs(options, args);
+
+        String tInterval = parsedArgs.get("t");
+        if(tInterval != null){
+            interval = Integer.parseInt(tInterval);
+            log.debug("Streaming interval set to: " + interval + " milliseconds");
         }
 
-        twitterStreamer.run(outpurDir, interval, sparkMaster, fSet);
+        String sMaster = parsedArgs.get("m");
+        if(sMaster != null){
+            if(UtilsSpark.checkSparkMaster(sMaster)) {
+                sparkMaster = sMaster;
+            }
+            else{
+                sparkMaster = MACRO.TWEETER_STREAMER_DEFAULT_MASTER;
+            }
+            log.debug("Spark master set to: " + sparkMaster);
+        }
+
+        twitterStreamer.run(interval, sparkMaster);
         log.debug("Exit program with code (0)");
         System.exit(-0);
     }
 
-    private void run(String outputDir, int interval, String sparkMaster, Set<String> fSet) {
+    private void run(int interval, String sparkMaster) {
 
-        SparkConf conf = new SparkConf().setAppName("Disease Analyzer: Twitter Streamer [Beca Colaboracion UCM]").
+        SparkConf conf = new SparkConf().setAppName("Data Colector: Twitter Streamer [Beca Colaboracion UCM]").
                 set("spark.shuffle.consolidateFiles", "false").setMaster(sparkMaster);
         init();
 
+        JavaSparkContext sc = new JavaSparkContext(conf);
+
+        //List names
+        GeneralTransaction<Disease> diseaseGeneralTransaction = new DiseaseTransaction();
+        List<Disease> diseaseList = diseaseGeneralTransaction.getAll(Disease.class);
+
+        JavaRDD<String> diseaseNames = sc.parallelize(diseaseList)
+                                                    .flatMap(processDiseaseNames).distinct()
+                                                    .flatMap(addTranslations).distinct().cache();
+
+        List<String> fSet = diseaseNames.toArray();
+        diseaseGeneralTransaction.shutdown();
+        sc.close();
+
+        //Start Streaming
         JavaStreamingContext ssc = new JavaStreamingContext(conf, new Duration(interval));
         log.debug("Streaming context created successfully");
-        setbOutputDir(ssc.sparkContext().broadcast(outputDir));
-        setbTmpDir(ssc.sparkContext().broadcast(UtilsFS.tmpDir(outputDir, MACRO.TMP_DIR_NAME)));
         setbFilters(ssc.sparkContext().broadcast(fSet.toArray(new String[fSet.size()])));
         log.debug("Broadcasts set successfully");
         JavaInputDStream<Status> tweets = TwitterUtils.createStream(ssc,
                 UtilsTwitter.readTwitterCredentials("twitter4j.properties"), getbFilters());
         log.debug("Stream created successfully");
-        process(tweets);
+
+        tweets.flatMap(tweetFormatter).foreachRDD(saveFileFunction);
+
         log.info("Twitter streamer is about to start...");
         ssc.start();
         ssc.awaitTermination();
-        //Clean the tmp files directory of possible remaining files due to interruption of the thread
-        UtilsFS.cleanDirectory(getbTmpDir());
-        log.info("Cleaning temporal directory");
+        log.info("Twitter streamer finished");
     }
 
     private void init() {
+
+
+        processDiseaseNames = new FlatMapFunction<Disease,String>() {
+
+            @Override
+            public Iterable<String> call(Disease disease) throws Exception {
+                Set<String> ret = new HashSet<String>();
+
+                String diseaseName = disease.getDiseaseKey().getName();
+                String[] parts = diseaseName.split(MACRO.SPACE);
+                for(String part : parts){
+                    ret.add(part.trim());
+                }
+                ret.add(diseaseName);
+
+                return ret;
+            }
+        };
+
+
+        addTranslations = new FlatMapFunction<String,String>(){
+
+            @Override
+            public Iterable<String> call(String s) throws Exception {
+                Set<String> ret = new HashSet< String>();
+
+                Integer[] partsLanguage = new Integer[1];
+                Processor.Processor();
+                Processor.detectLanguage(new String[]{s}).toArray(partsLanguage);
+
+                if(partsLanguage != null && partsLanguage.length ==1){
+                    if(partsLanguage[0] == 1){
+                        String key = Translator.translate(s.trim());
+                        ret.add(s);
+                    }
+                }
+                ret.add(s);
+
+                return ret;
+            }
+        };
+
 
         saveFileFunction = new Function<JavaRDD<String>, Void>(){
 
             public Void call(JavaRDD<String> stringJavaRDD) throws Exception {
                 if(!stringJavaRDD.isEmpty()) {
-                    String currentMillis = String.valueOf(System.currentTimeMillis());
-                    String auxPath = getbTmpDir().concat(currentMillis);
-                    String outDir = getbOutputDir();
-                    String markdown = MACRO.TWITTER_FILE_TAG.concat(MACRO.UNDERSCORE).concat(currentMillis);
-                    stringJavaRDD.saveAsTextFile(auxPath);
-                    UtilsFS.MoveAndDelete(auxPath, outDir, markdown, MACRO.EMPTY, Arrays.asList(FILES_TO_AVOID) , true);
+
                 }
                 return null;
             }
@@ -210,14 +228,8 @@ public class TwitterStreamer implements Serializable {
         };
     }
 
-    private void process(JavaDStream tweets) {
-        tweets.flatMap(tweetFormatter).foreachRDD(saveFileFunction);
-    }
-
     private static void addOptions(Options options) {
-        options.addOption("o", true, "output directory");
         options.addOption("t", true, "time interval for twitter streamer");
         options.addOption("m", true, "spark master");
-        options.addOption("f", true, "list of comma separated words to filter by");
     }
 }

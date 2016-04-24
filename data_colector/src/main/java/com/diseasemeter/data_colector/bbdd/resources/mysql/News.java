@@ -1,5 +1,7 @@
 package com.diseasemeter.data_colector.bbdd.resources.mysql;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -144,11 +146,12 @@ public class News extends GeneralResource<NewsKey>  implements Serializable{
         this.date = date;
     }
 
+    @JsonIgnore
     public static int getWeightFromSentiment(int sentiment){
         switch (sentiment){
-            case -1: return -2;
-            case 0: return 2;
-            case 1: return 4;
+            case -1: return -4;
+            case 0: return 4;
+            case 1: return 8;
             default: return 2;
         }
     }

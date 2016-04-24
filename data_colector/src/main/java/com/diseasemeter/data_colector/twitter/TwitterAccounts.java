@@ -1,7 +1,7 @@
 package com.diseasemeter.data_colector.twitter;
 
 
-import com.diseasemeter.data_colector.common.MACRO;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Tweet;
 import com.diseasemeter.data_colector.common.UtilsCommon;
 import com.diseasemeter.data_colector.common.UtilsFS;
 import com.diseasemeter.data_colector.common.UtilsTwitter;
@@ -152,7 +152,7 @@ public class TwitterAccounts implements Serializable {
         @Override
         public void onStatus(Status status) {
             Tweet tweet = new Tweet(status.getCreatedAt(),status.getPlace(), status.getText(), status.getUser());
-            log.debug("Tweet from "+tweet.getUserName()+" processed");
+            //log.debug("Tweet from "+tweet.getUserName()+" processed");
             //Needs disease and status to be correct
             //tweetMapper.insert(tweet);
         }

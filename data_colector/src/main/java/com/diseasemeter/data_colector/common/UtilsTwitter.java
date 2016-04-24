@@ -38,7 +38,7 @@ public class UtilsTwitter {
 
         Set<String> filterSet = new HashSet<String>();
         for(String filter : strings){
-            if(content.contains(filter)){
+            if(content.toLowerCase().contains(filter.toLowerCase())){
                 filterSet.add(filter);
             }
         }

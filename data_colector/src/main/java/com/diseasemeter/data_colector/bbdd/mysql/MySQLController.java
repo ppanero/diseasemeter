@@ -4,6 +4,7 @@ package com.diseasemeter.data_colector.bbdd.mysql;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.CDCData;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.News;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Tweet;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -22,6 +23,7 @@ public class MySQLController {
                                     addAnnotatedClass(Disease.class).
                                     addAnnotatedClass(CDCData.class).
                                     addAnnotatedClass(News.class).
+                                    addAnnotatedClass(Tweet.class).
                                     buildSessionFactory();
             }catch (Throwable ex) {
                 System.err.println("Failed to create sessionFactory object." + ex);

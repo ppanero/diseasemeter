@@ -166,7 +166,11 @@ public class CDCWebNotices {
                 if(!centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)) {
                     centerOperation.insert(new Center(alert.getName(), location, timestamp, new Location(coordinates)));
                 }
-                heatpointOperation.insert(new HeatPoint(alert.getWeight(),timestamp, alert.getName(), location,
+                conditions.clear();
+                conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, alert.getName()));
+                conditions.add(MongoDBController.createCriteria("location.coordinates", MongoComparation.EQ, coordinates));
+                if(!heatpointOperation.exists(conditions, HeatPoint.class));
+                    heatpointOperation.insert(new HeatPoint(alert.getWeight(),timestamp, alert.getName(), location,
                                             new Location(coordinates)));
             }
         }

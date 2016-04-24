@@ -321,7 +321,11 @@ public abstract class Newspaper implements Serializable {
                     if(!centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)) {
                         centerOperation.insert(new Center(disease.getDiseaseKey().getName(), location, timestamp, new Location(coordinates)));
                     }
-                    heatpointOperation.insert(new HeatPoint(news.getWeight(),timestamp, disease.getDiseaseKey().getName(), location,
+                    conditions.clear();
+                    conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, disease.getDiseaseKey().getName()));
+                    conditions.add(MongoDBController.createCriteria("location.coordinates", MongoComparation.EQ, coordinates));
+                    if(!heatpointOperation.exists(conditions, HeatPoint.class));
+                        heatpointOperation.insert(new HeatPoint(news.getWeight(),timestamp, disease.getDiseaseKey().getName(), location,
                             new Location(coordinates)));
                 }
                 ret.add(newsDiseaseTuple2);

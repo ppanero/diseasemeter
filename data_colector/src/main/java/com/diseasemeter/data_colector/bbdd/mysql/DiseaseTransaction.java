@@ -4,7 +4,10 @@ package com.diseasemeter.data_colector.bbdd.mysql;
 
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
 import org.hibernate.*;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.DistinctRootEntityResultTransformer;
+import org.hibernate.transform.ResultTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +96,27 @@ public class DiseaseTransaction extends GeneralTransaction<Disease>{
         }finally {
             session.close();
         }
+    }
 
+
+    public List<String> getAllByNameLike(Disease disease){
+        Session session = MySQLController.getSessionFactory().openSession();
+        Criteria criteria = session.createCriteria(disease.getClass());
+
+        criteria.add(Restrictions.like("diseaseKey._name", "%".concat(disease.getDiseaseKey().getName()).concat("%")));
+        criteria.setProjection(Projections.distinct(Projections.property( "diseaseKey._name")));
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            List<String> list = criteria.list();
+            tx.commit();
+            return list;
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            return new ArrayList<String>();
+        }finally {
+            session.close();
+        }
     }
 
     private static boolean isDateFormatted(String date) {

@@ -1,0 +1,93 @@
+{"_id":{"$oid":"5716483cd4c65efe834f1953"},"name":"Chikungunya","zone":"Central America","timestamp":{"$numberLong":"1447887600000"},"location":{"type":"Point","coordinates":[-85.60236429999999,12.7690126]}}
+{"_id":{"$oid":"5716483cd4c65efe834f1955"},"name":"Zika Virus","zone":"Honduras","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-86.241905,15.199999]}}
+{"_id":{"$oid":"5716483cd4c65efe834f1957"},"name":"MERS","zone":"the Arabian Peninsula","timestamp":{"$numberLong":"1447887600000"},"location":{"type":"Point","coordinates":[47.4490397,19.4914108]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1959"},"name":"Zika Virus","zone":"Saint Martin","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-63.05225100000001,18.08255]}}
+{"_id":{"$oid":"5716483dd4c65efe834f195b"},"name":"Zika Virus","zone":"Cape Verde","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-23.6051722,15.120142]}}
+{"_id":{"$oid":"5716483dd4c65efe834f195d"},"name":"Zika Virus","zone":"Bolivia","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-63.58865299999999,-16.290154]}}
+{"_id":{"$oid":"5716483dd4c65efe834f195f"},"name":"Zika Virus","zone":"Kosrae+Federated States of Micronesia","timestamp":{"$numberLong":"1459461600000"},"location":{"type":"Point","coordinates":[162.9814877,5.3095618]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1961"},"name":"Zika Virus","zone":"Mexico","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-102.552784,23.634501]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1963"},"name":"Cholera","zone":"Tanzania","timestamp":{"$numberLong":"1446159600000"},"location":{"type":"Point","coordinates":[34.888822,-6.369028]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1965"},"name":"Yellow Fever","zone":"Angola","timestamp":{"$numberLong":"1460671200000"},"location":{"type":"Point","coordinates":[17.873887,-11.202692]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1967"},"name":"Zika Virus","zone":"Barbados","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-59.543198,13.193887]}}
+{"_id":{"$oid":"5716483dd4c65efe834f1969"},"name":"Polio","zone":"Ukraine","timestamp":{"$numberLong":"1446505200000"},"location":{"type":"Point","coordinates":[31.16558,48.379433]}}
+{"_id":{"$oid":"5716483dd4c65efe834f196b"},"name":"Zika Virus","zone":"New Caledonia","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[165.618042,-20.904305]}}
+{"_id":{"$oid":"5716483ed4c65efe834f196d"},"name":"Zika Virus","zone":"Trinidad and Tobago","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-61.222503,10.691803]}}
+{"_id":{"$oid":"5716483ed4c65efe834f196f"},"name":"Zika Virus","zone":"Sint Maarten","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-63.05483,18.04248]}}
+{"_id":{"$oid":"5716483ed4c65efe834f1971"},"name":"Chikungunya","zone":"the Pacific Islands","timestamp":{"$numberLong":"1436133600000"},"location":{"type":"Point","coordinates":[-117.7294342,33.5095877]}}
+{"_id":{"$oid":"5716483ed4c65efe834f1973"},"name":"Polio","zone":"Guinea","timestamp":{"$numberLong":"1446505200000"},"location":{"type":"Point","coordinates":[-9.696645,9.945587]}}
+{"_id":{"$oid":"5716483ed4c65efe834f1975"},"name":"Zika Virus","zone":"Cuba","timestamp":{"$numberLong":"1458342000000"},"location":{"type":"Point","coordinates":[-77.781167,21.521757]}}
+{"_id":{"$oid":"5716483ed4c65efe834f1977"},"name":"Zika Virus","zone":"Guyana","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-58.93018,4.860416]}}
+{"_id":{"$oid":"5716483ed4c65efe834f1979"},"name":"Zika Virus","zone":"Paraguay","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-58.443832,-23.442503]}}
+{"_id":{"$oid":"5716483ed4c65efe834f197b"},"name":"Lassa Fever","zone":"Nigeria","timestamp":{"$numberLong":"1460584800000"},"location":{"type":"Point","coordinates":[8.675277,9.081999]}}
+{"_id":{"$oid":"5716483ed4c65efe834f197d"},"name":"Zika Virus","zone":"Venezuela","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-66.58973,6.42375]}}
+{"_id":{"$oid":"5716483ed4c65efe834f197f"},"name":"Zika Virus","zone":"American Samoa","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-170.6961815,-14.3060204]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1981"},"name":"Zika Virus","zone":"Aruba","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-69.968338,12.52111]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1983"},"name":"Zika Virus","zone":"Belize","timestamp":{"$numberLong":"1460930400000"},"location":{"type":"Point","coordinates":[-88.49765,17.189877]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1985"},"name":"Zika Virus","zone":"Tonga","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-175.198242,-21.178986]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1987"},"name":"Zika Virus","zone":"Colombia","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-74.297333,4.570868]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1989"},"name":"Zika Virus","zone":"Suriname","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-56.027783,3.919305]}}
+{"_id":{"$oid":"5716483fd4c65efe834f198b"},"name":"Polio","zone":"Madagascar","timestamp":{"$numberLong":"1446505200000"},"location":{"type":"Point","coordinates":[46.869107,-18.766947]}}
+{"_id":{"$oid":"5716483fd4c65efe834f198d"},"name":"Zika Virus","zone":"Fiji","timestamp":{"$numberLong":"1459461600000"},"location":{"type":"Point","coordinates":[178.065032,-17.713371]}}
+{"_id":{"$oid":"5716483fd4c65efe834f198f"},"name":"Zika Virus","zone":"Samoa","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-172.104629,-13.759029]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1991"},"name":"Zika Virus","zone":"the Dominican Republic","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-70.162651,18.735693]}}
+{"_id":{"$oid":"5716483fd4c65efe834f1993"},"name":"Chikungunya","zone":"the Caribbean","timestamp":{"$numberLong":"1431554400000"},"location":{"type":"Point","coordinates":[-78.6568942,21.4691137]}}
+{"_id":{"$oid":"57164840d4c65efe834f1995"},"name":"Zika Virus","zone":"Jamaica","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-77.297508,18.109581]}}
+{"_id":{"$oid":"57164840d4c65efe834f1997"},"name":"Chikungunya","zone":"Senegal","timestamp":{"$numberLong":"1442527200000"},"location":{"type":"Point","coordinates":[-14.452362,14.497401]}}
+{"_id":{"$oid":"57164840d4c65efe834f1999"},"name":"Zika Virus","zone":"Costa Rica","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-83.753428,9.748916999999999]}}
+{"_id":{"$oid":"57164840d4c65efe834f199b"},"name":"Chikungunya","zone":"Mexico","timestamp":{"$numberLong":"1447887600000"},"location":{"type":"Point","coordinates":[-102.552784,23.634501]}}
+{"_id":{"$oid":"57164840d4c65efe834f199d"},"name":"Zika Virus","zone":"Saint Lucia","timestamp":{"$numberLong":"1460498400000"},"location":{"type":"Point","coordinates":[-60.978893,13.909444]}}
+{"_id":{"$oid":"57164840d4c65efe834f199f"},"name":"Zika Virus","zone":"Marshall Islands","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[171.989379,6.0683017]}}
+{"_id":{"$oid":"57164840d4c65efe834f19a1"},"name":"Zika Virus","zone":"Nicaragua","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-85.207229,12.865416]}}
+{"_id":{"$oid":"57164840d4c65efe834f19a3"},"name":"Lassa Fever","zone":"Benin","timestamp":{"$numberLong":"1460584800000"},"location":{"type":"Point","coordinates":[2.315834,9.30769]}}
+{"_id":{"$oid":"57164840d4c65efe834f19a5"},"name":"Zika Virus","zone":"Saint Vincent and the Grenadines","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-61.19716279999999,13.2528179]}}
+{"_id":{"$oid":"57164840d4c65efe834f19a7"},"name":"Polio","zone":"Nigeria","timestamp":{"$numberLong":"1447628400000"},"location":{"type":"Point","coordinates":[8.675277,9.081999]}}
+{"_id":{"$oid":"57164841d4c65efe834f19a9"},"name":"Zika Virus","zone":"Guatemala","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-90.23075899999999,15.783471]}}
+{"_id":{"$oid":"57164841d4c65efe834f19ab"},"name":"Zika Virus","zone":"Brazil","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-51.92528,-14.235004]}}
+{"_id":{"$oid":"57164841d4c65efe834f19ad"},"name":"Zika Virus","zone":"French Guiana","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-53.125782,3.933889]}}
+{"_id":{"$oid":"57164841d4c65efe834f19af"},"name":"Zika Virus","zone":"Puerto Rico","timestamp":{"$numberLong":"1459202400000"},"location":{"type":"Point","coordinates":[-66.590149,18.220833]}}
+{"_id":{"$oid":"57164841d4c65efe834f19b1"},"name":"Zika Virus","zone":"Bonaire","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-68.2385339,12.1783611]}}
+{"_id":{"$oid":"57164841d4c65efe834f19b3"},"name":"Zika Virus","zone":"Haiti","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-72.285215,18.971187]}}
+{"_id":{"$oid":"57164841d4c65efe834f19b5"},"name":"Zika Virus","zone":"Curaçao","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-68.99002,12.16957]}}
+{"_id":{"$oid":"57164841d4c65efe834f19b7"},"name":"Zika Virus","zone":"Ecuador","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-78.18340599999999,-1.831239]}}
+{"_id":{"$oid":"57164841d4c65efe834f19b9"},"name":"Zika Virus","zone":"Dominica","timestamp":{"$numberLong":"1458601200000"},"location":{"type":"Point","coordinates":[-61.37097600000001,15.414999]}}
+{"_id":{"$oid":"57164841d4c65efe834f19bb"},"name":"Zika Virus","zone":"Martinique","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-61.024174,14.641528]}}
+{"_id":{"$oid":"57164842d4c65efe834f19bd"},"name":"Zika Virus","zone":"El Salvador","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-88.89653,13.794185]}}
+{"_id":{"$oid":"57164842d4c65efe834f19bf"},"name":"Zika Virus","zone":"US Virgin Islands","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-64.896335,18.335765]}}
+{"_id":{"$oid":"57164842d4c65efe834f19c1"},"name":"Zika Virus","zone":"Panama","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-80.782127,8.537981]}}
+{"_id":{"$oid":"57164842d4c65efe834f19c3"},"name":"Polio","zone":"Laos","timestamp":{"$numberLong":"1446505200000"},"location":{"type":"Point","coordinates":[102.495496,19.85627]}}
+{"_id":{"$oid":"57164842d4c65efe834f19c5"},"name":"Polio","zone":"Burma+Myanmar","timestamp":{"$numberLong":"1450652400000"},"location":{"type":"Point","coordinates":[95.955974,21.916221]}}
+{"_id":{"$oid":"57164842d4c65efe834f19c7"},"name":"Chikungunya","zone":"South America","timestamp":{"$numberLong":"1457996400000"},"location":{"type":"Point","coordinates":[-55.491477,-8.783195]}}
+{"_id":{"$oid":"57164842d4c65efe834f19c9"},"name":"Zika Virus","zone":"Guadeloupe","timestamp":{"$numberLong":"1457650800000"},"location":{"type":"Point","coordinates":[-61.55099999999999,16.265]}}
+{"_id":{"$oid":"571b6a65d4c665dafbdd56f7"},"name":"Earthquakes","zone":"Ecuador","timestamp":{"$numberLong":"1461276000000"},"location":{"type":"Point","coordinates":[-78.18340599999999,-1.831239]}}
+{"_id":{"$oid":"571b8895d4c6d13b895dc31b"},"name":"Zika Virus","zone":"LUG","timestamp":{"$numberLong":"1461362400000"},"location":{"type":"Point","coordinates":[29.8505903,58.74081899999999]}}
+{"_id":{"$oid":"571b8be1d4c6e759a27f72d8"},"name":"Zika Virus","zone":"Zika","timestamp":{"$numberLong":"1461362400000"},"location":{"type":"Point","coordinates":[23.28899,41.1836032]}}
+{"_id":{"$oid":"571b8be1d4c6e759a27f72da"},"name":"Zika Virus","zone":"España","timestamp":{"$numberLong":"1461362400000"},"location":{"type":"Point","coordinates":[-3.74922,40.46366700000001]}}
+{"_id":{"$oid":"571cddfbd4c6285a7f52d38a"},"name":"Zika Virus","zone":"Ceará, Brasil","timestamp":{"$numberLong":"1461509627277"},"location":{"type":"Point","coordinates":[-39.3206241,-5.4983977]}}
+{"_id":{"$oid":"571cde97d4c64f0a2f9fd56d"},"name":"Lassa Fever","zone":"México DF","timestamp":{"$numberLong":"1461509783398"},"location":{"type":"Point","coordinates":[-99.1013498,19.2464696]}}
+{"_id":{"$oid":"571cde97d4c64f0a2f9fd56f"},"name":"Yellow Fever","zone":"México DF","timestamp":{"$numberLong":"1461509783609"},"location":{"type":"Point","coordinates":[-99.1013498,19.2464696]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd571"},"name":"Chikungunya","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787254"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd573"},"name":"Cholera","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787328"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd575"},"name":"Earthquakes","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787398"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd577"},"name":"Lassa Fever","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787465"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd579"},"name":"MERS","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787547"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd57b"},"name":"Polio","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787672"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd57d"},"name":"Yellow Fever","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787737"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cde9bd4c64f0a2f9fd57f"},"name":"Zika Virus","zone":"Sant Feliu de Llobregat","timestamp":{"$numberLong":"1461509787800"},"location":{"type":"Point","coordinates":[2.0494619,41.38467]}}
+{"_id":{"$oid":"571cdf08d4c621e55f74616f"},"name":"Zika Virus","zone":"Hortolândia","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-47.2147082,-22.8533412]}}
+{"_id":{"$oid":"571cdf0cd4c621e55f746176"},"name":"Yellow Fever","zone":"Kocaeli ?zmit","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[29.987535,40.770276]}}
+{"_id":{"$oid":"571cdf1cd4c621e55f7461a9"},"name":"Lassa Fever","zone":"Brasil","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-51.92528,-14.235004]}}
+{"_id":{"$oid":"571cdf1cd4c621e55f7461ab"},"name":"Yellow Fever","zone":"Brasil","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-51.92528,-14.235004]}}
+{"_id":{"$oid":"571cdf2bd4c621e55f7461ad"},"name":"Lassa Fever","zone":"bath/portsmouth","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-1.1092636,50.7921677]}}
+{"_id":{"$oid":"571cdf2bd4c621e55f7461af"},"name":"Yellow Fever","zone":"bath/portsmouth","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-1.1092636,50.7921677]}}
+{"_id":{"$oid":"571cdf2fd4c621e55f7461b1"},"name":"Lassa Fever","zone":"United Kingdom","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-3.435973,55.378051]}}
+{"_id":{"$oid":"571cdf2fd4c621e55f7461b3"},"name":"Yellow Fever","zone":"United Kingdom","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-3.435973,55.378051]}}
+{"_id":{"$oid":"571cdf45d4c621e55f7461b5"},"name":"Chikungunya","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461b7"},"name":"Cholera","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461b9"},"name":"Earthquakes","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461bb"},"name":"Lassa Fever","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461bd"},"name":"MERS","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461bf"},"name":"Polio","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461c1"},"name":"Yellow Fever","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf46d4c621e55f7461c3"},"name":"Zika Virus","zone":"Bengaluru, Karnataka","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[77.5945627,12.9715987]}}
+{"_id":{"$oid":"571cdf4ad4c621e55f7461c5"},"name":"Lassa Fever","zone":"state college PA","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-77.8600012,40.7933949]}}
+{"_id":{"$oid":"571cdf4ad4c621e55f7461c7"},"name":"Yellow Fever","zone":"state college PA","timestamp":{"$numberLong":"1461448800000"},"location":{"type":"Point","coordinates":[-77.8600012,40.7933949]}}

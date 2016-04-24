@@ -72,6 +72,28 @@ CREATE TABLE IF NOT EXISTS `news` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 
+-- -----------------------------------------------------
+-- Table `twitter_data`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `twitter_data` (
+  `_content` VARCHAR(160) NOT NULL,
+  `_user_name` VARCHAR(45) NOT NULL,
+  `_disease` VARCHAR(45) NOT NULL,
+  `language` INT NOT NULL,
+  `sentiment` INT NOT NULL,
+  `weight` INT NOT NULL,
+  `creation_time` VARCHAR(45),
+  `creation_country` VARCHAR(45),
+  `creation_place_name` VARCHAR(45),
+  `creation_place_type` VARCHAR(45),
+  `user_location` VARCHAR(45),
+  PRIMARY KEY (`_content`, `_user_name`, `_disease` ),
+  INDEX `fk_twitter_data_disease_idx` (`_disease`),
+  CONSTRAINT `fk_twitter_data_disease_idx`
+    FOREIGN KEY (`_disease`)
+    REFERENCES `disease` (`_name`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

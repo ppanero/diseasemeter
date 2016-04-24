@@ -1,27 +1,37 @@
 package com.diseasemeter.data_colector.twitter;
 
 
+import com.diseasemeter.data_colector.bbdd.mongodb.GeneralOperation;
+import com.diseasemeter.data_colector.bbdd.mongodb.MongoComparation;
+import com.diseasemeter.data_colector.bbdd.mongodb.MongoDBController;
 import com.diseasemeter.data_colector.bbdd.mysql.DiseaseTransaction;
 import com.diseasemeter.data_colector.bbdd.mysql.GeneralTransaction;
+import com.diseasemeter.data_colector.bbdd.mysql.TweetTransaction;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.Center;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.HeatPoint;
+import com.diseasemeter.data_colector.bbdd.resources.mongodb.Location;
 import com.diseasemeter.data_colector.bbdd.resources.mysql.Disease;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.DiseaseKey;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.News;
+import com.diseasemeter.data_colector.bbdd.resources.mysql.Tweet;
 import com.diseasemeter.data_colector.common.*;
+import com.diseasemeter.data_colector.google_api.Geocoder;
 import com.diseasemeter.data_colector.microsoft_api.Translator;
 import com.diseasemeter.data_colector.monkey_learn.Processor;
+import com.monkeylearn.Tuple;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.FlatMapFunction;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.broadcast.Broadcast;
 import org.apache.spark.streaming.Duration;
-import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaInputDStream;
 import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.twitter.TwitterUtils;
+import org.springframework.data.mongodb.core.query.Criteria;
 import scala.Tuple2;
 import twitter4j.Status;
 
@@ -48,13 +58,14 @@ public class TwitterStreamer implements Serializable {
 
     private static Logger log = Logger.getLogger(TwitterStreamer.class);
     private static final String[] FILES_TO_AVOID = {"SUCCESS", "CRC" ,"crc"};
+    private static final String outputDateFormat = "dd/MM/yyyy";
     private Broadcast<String[]> bFilters;
 
     //Spark functions
     private FlatMapFunction<Disease,String> processDiseaseNames;
     private FlatMapFunction<String,String> addTranslations;
-    private Function<JavaRDD<String>, Void> saveFileFunction;
-    private FlatMapFunction<Status, String> tweetFormatter;
+    private FlatMapFunction<Status, Tuple2<String, Tweet>> tweetFormatter;
+    private Function<JavaRDD<Tuple2<String, Tweet>>, Void> saveFileFunction;
 
     public String[] getbFilters() {
         return bFilters.getValue();
@@ -154,7 +165,8 @@ public class TwitterStreamer implements Serializable {
                 String diseaseName = disease.getDiseaseKey().getName();
                 String[] parts = diseaseName.split(MACRO.SPACE);
                 for(String part : parts){
-                    ret.add(part.trim());
+                    if(!part.toLowerCase().equals("yellow") && !part.toLowerCase().equals("virus"))
+                        ret.add(part.trim());
                 }
                 ret.add(diseaseName);
 
@@ -176,7 +188,7 @@ public class TwitterStreamer implements Serializable {
                 if(partsLanguage != null && partsLanguage.length ==1){
                     if(partsLanguage[0] == 1){
                         String key = Translator.translate(s.trim());
-                        ret.add(s);
+                        ret.add(key);
                     }
                 }
                 ret.add(s);
@@ -186,46 +198,156 @@ public class TwitterStreamer implements Serializable {
         };
 
 
-        saveFileFunction = new Function<JavaRDD<String>, Void>(){
-
-            public Void call(JavaRDD<String> stringJavaRDD) throws Exception {
-                if(!stringJavaRDD.isEmpty()) {
-
-                }
-                return null;
-            }
-        };
-
         /**
          * Takes the creation place, user's default location, creation country's name, creation place's name,
          * creation place's type, tweet text content, and tweet source.
          */
-        tweetFormatter = new FlatMapFunction<Status, String>() {
+        tweetFormatter = new FlatMapFunction<Status, Tuple2<String, Tweet>>() {
             @Override
-            public Iterable<String> call(Status status) throws Exception {
-                Set<String> ret = new HashSet<String>();
+            public Iterable<Tuple2<String, Tweet>> call(Status status) throws Exception {
+                Set<Tuple2<String, Tweet>> ret = new HashSet<Tuple2<String, Tweet>>();
                 Tweet tweet = new Tweet(status.getCreatedAt(),status.getPlace(), status.getText(), status.getUser());
-                String baseString = tweet.getCreationTime().concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getCreationCountry()).concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getCreationPlaceName()).concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getCreationPlaceType()).concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getContent()).concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getUserDefaultLocation()).concat(MACRO.FILE_SEPARATOR)
-                        .concat(tweet.getUserName().concat(MACRO.FILE_SEPARATOR));
 
-                Set<String> filters = UtilsTwitter.getFilter(tweet.getContent(), getbFilters());
+                Set<String> filters = UtilsTwitter.getFilter(tweet.getTweetKey().getContent(), getbFilters());
                 if(filters.isEmpty()){
-                    ret.add(baseString.concat(MACRO.MISSING_VALUE).replaceAll(MACRO.END_OF_LINE, MACRO.SPACE).trim());
+                    ret.add(new Tuple2<String, Tweet>("", tweet));
                 }
                 else {
                     for (String filter : filters) {
-                        ret.add(baseString.concat(filter).replaceAll(MACRO.END_OF_LINE, MACRO.SPACE).trim());
+                        ret.add(new Tuple2<String, Tweet>(filter, tweet));
                     }
                 }
                 log.debug("Tweet processed with " + filters.size() + " filters");
                 return ret;
             }
         };
+
+
+        saveFileFunction = new Function<JavaRDD<Tuple2<String, Tweet>>, Void>(){
+
+
+            @Override
+            public Void call(JavaRDD<Tuple2<String, Tweet>> tuple2JavaRDD) throws Exception {
+
+                if(!tuple2JavaRDD.isEmpty()) {
+                    Iterator<Tuple2<String, Tweet>> it = tuple2JavaRDD.toLocalIterator();
+                    while(it.hasNext()){
+                        saveTweet(it.next());
+                    }
+                }
+                return null;
+            }
+
+        };
+    }
+
+    private static void saveTweet(Tuple2<String, Tweet> stringTweetTuple2) {
+        String key = stringTweetTuple2._1();
+        Tweet tweet = stringTweetTuple2._2();
+
+        GeneralTransaction<Disease> diseaseTransaction = new DiseaseTransaction();
+        GeneralTransaction<Tweet> tweetTransaction = new TweetTransaction();
+
+        if(processTweet(tweet) == 2){
+            key = Translator.translate(key.trim());
+        }
+
+        List<String> diseaseLikeList = ((DiseaseTransaction)diseaseTransaction).getAllByNameLike(
+                new Disease(new DiseaseKey(key, null)));
+
+        if(tweet.noLocation()){
+            for(String sDisease : diseaseLikeList) {
+                List<Disease> diseaseListByName = ((DiseaseTransaction)diseaseTransaction)
+                                                    .getAllByName(new Disease(new DiseaseKey(sDisease, null)));
+                for(Disease dByName : diseaseListByName) {
+                    processDisease(tweet, diseaseTransaction, dByName);
+                    if (!tweetTransaction.exists(tweet)) {
+                        tweet.getTweetKey().setDisease(dByName.getDiseaseKey().getName());
+                        tweetTransaction.insert(tweet);
+                    }
+                    insertIntoMongo(dByName.getDiseaseKey().getLocation(), dByName.getDiseaseKey().getName(),
+                                    tweet.getWeight(), tweet.getCreationTime());
+                }
+            }
+        }
+        else{
+            String location = tweet.getPreferredLocation();
+            for(String sDisease : diseaseLikeList) {
+                Disease disease = new Disease(new DiseaseKey(sDisease, location));
+                processDisease(tweet, diseaseTransaction, disease);
+                if(!tweetTransaction.exists(tweet)){
+                    tweet.getTweetKey().setDisease(disease.getDiseaseKey().getName());
+                    tweetTransaction.insert(tweet);
+                }
+                insertIntoMongo(disease.getDiseaseKey().getLocation(), disease.getDiseaseKey().getName(),
+                                tweet.getWeight(), tweet.getCreationTime());
+            }
+        }
+
+        diseaseTransaction.shutdown();
+        tweetTransaction.shutdown();
+    }
+
+    private static void insertIntoMongo(String location, String name, int weight, String date) {
+        GeneralOperation<Center> centerOperation = new GeneralOperation<Center>();
+        GeneralOperation<HeatPoint> heatpointOperation = new GeneralOperation<HeatPoint>();
+
+        Double[] coordinates = Geocoder.geocode(location);
+
+        Set<Criteria> conditions = new HashSet<Criteria>();
+        conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, name));
+        if(coordinates != null) {
+            long timestamp = UtilsCommon.getTimestampFromDate(outputDateFormat, date);
+            if(!centerOperation.existsAtMaxDistance(Center.class, "location", coordinates, 500, conditions)) {
+                centerOperation.insert(new Center(name, location, timestamp, new Location(coordinates)));
+            }
+            conditions.clear();
+            conditions.add(MongoDBController.createCriteria("name", MongoComparation.EQ, name));
+            conditions.add(MongoDBController.createCriteria("location.coordinates", MongoComparation.EQ, coordinates));
+            if(!heatpointOperation.exists(conditions, HeatPoint.class));
+            heatpointOperation.insert(new HeatPoint(weight,timestamp, name, location,
+                    new Location(coordinates)));
+        }
+    }
+
+    private static int processTweet(Tweet tweet) {
+        int ret = 2;
+        String[] textList = new String[]{tweet.getTweetKey().getContent()};
+        Processor.Processor();
+        List<Integer> languageDetections = Processor.detectLanguage(textList);
+        if(languageDetections != null && languageDetections.size() == 1){
+            List<Integer> sentimentDetections = null;
+            if(languageDetections.get(0) == 1){
+                ret = 1;
+                sentimentDetections = Processor.sentimentAnalysis(1, textList);
+            }
+            else{
+                sentimentDetections = Processor.sentimentAnalysis(2, textList);
+            }
+            if(sentimentDetections != null && sentimentDetections.size() == 1){
+                tweet.setLanguage(languageDetections.get(0));
+                tweet.setSentiment(sentimentDetections.get(0));
+                tweet.setWeight(Tweet.getWeightFromSentiment(sentimentDetections.get(0)));
+            }
+        }
+        return ret;
+    }
+
+    private static void processDisease(Tweet tweet, GeneralTransaction<Disease> diseaseTransaction, Disease disease) {
+        if (!diseaseTransaction.exists(disease)) {
+            disease.setWeight(disease.getWeight() + tweet.getWeight());
+            disease.setLevel(Disease.getLevelFromNewWeight(disease.getWeight()));
+            disease.setTweetsCount(disease.getTweetsCount()+1);
+            diseaseTransaction.insert(disease);
+        }
+        else{
+            Disease dAux = diseaseTransaction.findByKey(disease);
+            dAux.setTweetsCount(dAux.getTweetsCount()+1);
+            dAux.setLastUpdate(UtilsCommon.getCurrentDate(outputDateFormat));
+            dAux.setWeight(dAux.getWeight()+tweet.getWeight());
+            dAux.setLevel(Disease.getLevelFromNewWeight(dAux.getWeight()));
+            diseaseTransaction.update(dAux);
+        }
     }
 
     private static void addOptions(Options options) {

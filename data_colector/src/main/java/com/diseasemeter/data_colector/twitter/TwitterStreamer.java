@@ -165,7 +165,9 @@ public class TwitterStreamer implements Serializable {
                 String diseaseName = disease.getDiseaseKey().getName();
                 String[] parts = diseaseName.split(MACRO.SPACE);
                 for(String part : parts){
-                    if(!part.toLowerCase().equals("yellow") && !part.toLowerCase().equals("virus"))
+                    if(!part.toLowerCase().equals("yellow")
+                            && !part.toLowerCase().equals("fever")
+                            && !part.toLowerCase().equals("virus"))
                         ret.add(part.trim());
                 }
                 ret.add(diseaseName);
@@ -198,10 +200,6 @@ public class TwitterStreamer implements Serializable {
         };
 
 
-        /**
-         * Takes the creation place, user's default location, creation country's name, creation place's name,
-         * creation place's type, tweet text content, and tweet source.
-         */
         tweetFormatter = new FlatMapFunction<Status, Tuple2<String, Tweet>>() {
             @Override
             public Iterable<Tuple2<String, Tweet>> call(Status status) throws Exception {
@@ -209,10 +207,22 @@ public class TwitterStreamer implements Serializable {
                 Tweet tweet = new Tweet(status.getCreatedAt(),status.getPlace(), status.getText(), status.getUser());
 
                 Set<String> filters = UtilsTwitter.getFilter(tweet.getTweetKey().getContent(), getbFilters());
-                if(filters.isEmpty()){
-                    ret.add(new Tuple2<String, Tweet>("", tweet));
-                }
-                else {
+                if(!filters.isEmpty()){
+                    Processor.Processor();
+                    Integer[] partsLanguage = new Integer[1];
+                    Processor.detectLanguage(new String[]{tweet.getTweetKey().getContent()}).toArray(partsLanguage);
+
+                    if(partsLanguage != null && partsLanguage.length ==1) {
+                        Set<String> locations = Processor.locationExtractor(partsLanguage[0], new String[]{tweet.getTweetKey().getContent()});
+                        if (locations != null && locations.size() > 0) {
+                            for (String location : locations) {
+                                for (String filter : filters) {
+                                    tweet.setCreationPlaceName(location);
+                                    ret.add(new Tuple2<String, Tweet>(filter, tweet));
+                                }
+                            }
+                        }
+                    }
                     for (String filter : filters) {
                         ret.add(new Tuple2<String, Tweet>(filter, tweet));
                     }

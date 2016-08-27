@@ -17,7 +17,7 @@ import java.net.URL;
  */
 public class Geocoder {
 
-    private static final String API_KEY = "&key=AIzaSyDHy1fqfux9sJ8vjWLy9czZftenXd9WCNc";
+    private static final String API_KEY = "&key=YOUR_API_KEY";
     private static final String HTTP = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
     public static Double[] geocode(String place) {

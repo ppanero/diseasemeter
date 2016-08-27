@@ -1,4 +1,4 @@
-# DAnalyzer
+# Disease Meter
 
 Disease Analyzer is a system that aims to infer the aweareness of the citizens about active diseases around the world. The system consists of 4 modules the database, the data collector, the RESTful API and the Android application.
 
@@ -29,6 +29,8 @@ The API exposes two resources to query the list of diseases currently active and
 The Android application is a simple app that allows users to query the system (using the previous mentioned API) from their phone. It has two tabs, one for the geographic information and another one for listing the diseases.
 
 ## Installation manual
+
+Apart from following the instruction to set up the system in your server, there is a need to register in Twitter API, MonkeyLearn, Microsoft Translate, and Google API and get the corresponding API KEYs and added to the android manifest, and data collector configurations.
 
 //TODO
 

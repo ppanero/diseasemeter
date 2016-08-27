@@ -9,7 +9,7 @@ import com.memetix.mst.translate.Translate;
 public class Translator {
 
 
-    private static final String CLIENT_SECRET = "Wm2Ggw08AcZzZZLZhjh9NdbB1LjAq/yawpWqKjiJAwU=";
+    private static final String CLIENT_SECRET = "YOUR_CLIENT_SECRET";
     private static final String CLIENT_ID = "data-collector";
 
     public static String translate(String text) {
